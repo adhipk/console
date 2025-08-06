@@ -1,2 +1,3 @@
 #!/bin/bash
-while sleep 0.1; do ls target/* | entr sh -c 'LATESTFILE=$(ls -t target | head -n1); uv run display_image.py --fule "target/$LATESTFILE"';done
+find target -maxdepth 1 -type f | entr -d sh -c 'LATESTFILE=$(find target -maxdepth 1 -type f -printf "%T@ %p\n" | sort -n | tail -1 | cut -d" " -f2-); uv run display_image.py --file "$LATESTFILE"'
+
