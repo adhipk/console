@@ -63,9 +63,9 @@ export async function GET(request: Request) {
 			source: "api/display",
 			metadata: { headers },
 		});
-		// Serve color PNG for e-ink displays (600x448 for Inky Impression 5.7")
+		// Serve color PNG for e-ink displays (800x480 for Inky Impression 7.3")
 		return buildDisplayResponse(
-			`${basePngUrl}/${DEFAULT_SCREEN}.png?width=600&height=448`,
+			`${basePngUrl}/${DEFAULT_SCREEN}.png?width=800&height=480`,
 			`${DEFAULT_SCREEN}_${uniqueId}.png`,
 			DEFAULT_REFRESH_RATE,
 		);
