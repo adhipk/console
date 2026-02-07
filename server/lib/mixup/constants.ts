@@ -20,6 +20,12 @@ export enum DeviceDisplayMode {
 	MIXUP = "mixup",
 }
 
+export enum DeviceDisplayType {
+	BW = "bw",
+	GRAYSCALE = "grayscale",
+	COLOR = "color",
+}
+
 export type LayoutSlot = {
 	id: string;
 	label: string;

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/database/db";
 import { checkDbConnection } from "@/lib/database/utils";
 import { logError, logInfo } from "@/lib/logger";
+import { DeviceDisplayType } from "@/lib/mixup/constants";
 import {
 	DEFAULT_IMAGE_HEIGHT,
 	DEFAULT_IMAGE_WIDTH,
@@ -63,7 +64,8 @@ export async function GET(request: Request) {
 		}
 
 		const deviceData = device as unknown as Device;
-		const baseUrl = `${headers.hostUrl}/api/bitmap`;
+		const baseBmpUrl = `${headers.hostUrl}/api/bitmap`;
+		const basePngUrl = `${headers.hostUrl}/api/png`;
 		const screenToDisplay = deviceData.screen || "not-found";
 		const orientation = deviceData.screen_orientation || "landscape";
 		const deviceWidth =
@@ -83,7 +85,13 @@ export async function GET(request: Request) {
 				? deviceData.grayscale
 				: 2;
 
-		const imageUrl = `${baseUrl}/${screenToDisplay}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${grayscaleLevels}`;
+		const displayType = deviceData.display_type || DeviceDisplayType.BW;
+		const isColorDisplay = displayType === DeviceDisplayType.COLOR;
+		const imageExt = isColorDisplay ? "png" : "bmp";
+
+		const imageUrl = isColorDisplay
+			? `${basePngUrl}/${screenToDisplay}.png?width=${deviceWidth}&height=${deviceHeight}`
+			: `${baseBmpUrl}/${screenToDisplay}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${grayscaleLevels}`;
 
 		// Calculate refresh rate from schedule or use default
 		const refreshSchedule = deviceData.refresh_schedule as {
@@ -104,7 +112,7 @@ export async function GET(request: Request) {
 				status: 200,
 				refresh_rate: refreshRate,
 				image_url: imageUrl,
-				filename: `${screenToDisplay}.bmp`,
+				filename: `${screenToDisplay}.${imageExt}`,
 				rendered_at: deviceData.last_update_time || new Date().toISOString(),
 			},
 			{ status: 200 },

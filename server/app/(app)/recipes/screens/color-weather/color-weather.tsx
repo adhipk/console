@@ -287,8 +287,8 @@ export default function ColorWeather({
 		},
 	],
 	hourly = [],
-	width = 600,
-	height = 448,
+	width = 800,
+	height = 480,
 }: ColorWeatherProps) {
 	return (
 		<PreSatori width={width} height={height}>

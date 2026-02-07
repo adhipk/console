@@ -232,8 +232,8 @@ export default function ColorDashboard({
 		time: "8:42 AM",
 		dayOfWeek: "FRIDAY",
 	},
-	width = 600,
-	height = 448,
+	width = 800,
+	height = 480,
 }: DashboardProps) {
 	const eventColors: Record<string, string> = {
 		red: C.red,

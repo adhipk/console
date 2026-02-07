@@ -1,4 +1,4 @@
-import { DeviceDisplayMode } from "@/lib/mixup/constants";
+import { DeviceDisplayMode, DeviceDisplayType } from "@/lib/mixup/constants";
 
 export type Json =
 	| string
@@ -44,6 +44,7 @@ export type Device = {
 	screen_height: number | null;
 	screen_orientation: string | null;
 	grayscale: number | null;
+	display_type: DeviceDisplayType | null;
 };
 
 export type Playlist = {
@@ -100,4 +101,4 @@ export type SystemLog = {
 };
 
 // Re-export for convenience
-export { DeviceDisplayMode } from "@/lib/mixup/constants";
+export { DeviceDisplayMode, DeviceDisplayType } from "@/lib/mixup/constants";

@@ -101,6 +101,10 @@ export interface Devices {
 	 * Screen width in pixels
 	 */
 	screen_width: Generated<number | null>;
+	/**
+	 * Display type: bw (1-bit black/white), grayscale (2/4/16 levels), or color (7-color e-ink)
+	 */
+	display_type: Generated<string | null>;
 	timezone: Generated<string>;
 	updated_at: Generated<Timestamp | null>;
 	user_id: string | null;

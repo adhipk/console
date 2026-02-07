@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/database/db";
 import { checkDbConnection } from "@/lib/database/utils";
 import { logError, logInfo } from "@/lib/logger";
-import { DeviceDisplayMode } from "@/lib/mixup/constants";
+import { DeviceDisplayMode, DeviceDisplayType } from "@/lib/mixup/constants";
 import {
 	DEFAULT_IMAGE_HEIGHT,
 	DEFAULT_IMAGE_WIDTH,
@@ -100,12 +100,24 @@ export async function GET(request: Request) {
 		const grayscaleLevels = getGrayscaleLevels(
 			(device as { grayscale?: number | null }).grayscale ?? null,
 		);
+		const displayType =
+			((device as { display_type?: string | null })
+				.display_type as DeviceDisplayType) || DeviceDisplayType.BW;
+		const isColorDisplay = displayType === DeviceDisplayType.COLOR;
 		let dynamicRefreshRate = DEFAULT_REFRESH_RATE;
 		let imageUrl: string;
 
-		// Helper to build image URL - use color PNG for color e-ink screens
-		const buildImageUrl = (screen: string) =>
-			`${basePngUrl}/${screen}.png?width=${deviceWidth}&height=${deviceHeight}`;
+		// Build image URL based on display type
+		const buildImageUrl = (screen: string) => {
+			if (isColorDisplay) {
+				return `${basePngUrl}/${screen}.png?width=${deviceWidth}&height=${deviceHeight}`;
+			}
+			return `${baseBmpUrl}/${screen}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${grayscaleLevels}`;
+		};
+
+		// Build filename with correct extension
+		const buildFilename = (screen: string) =>
+			`${screen}_${uniqueId}.${isColorDisplay ? "png" : "bmp"}`;
 
 		switch (device.display_mode) {
 			case DeviceDisplayMode.PLAYLIST:
@@ -139,10 +151,15 @@ export async function GET(request: Request) {
 
 			case DeviceDisplayMode.MIXUP:
 				if (device.mixup_id) {
-					imageUrl = `${baseBmpUrl}/mixup/${device.mixup_id}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${grayscaleLevels}`;
+					if (isColorDisplay) {
+						imageUrl = `${baseBmpUrl}/mixup/${device.mixup_id}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${grayscaleLevels}&format=png`;
+					} else {
+						imageUrl = `${baseBmpUrl}/mixup/${device.mixup_id}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${grayscaleLevels}`;
+					}
 					const metadata = {
 						deviceId: device.friendly_id,
 						mixupId: device.mixup_id,
+						displayType,
 					};
 					logInfo("Using mixup display mode", {
 						source: "api/display",
@@ -182,7 +199,7 @@ export async function GET(request: Request) {
 
 		return buildDisplayResponse(
 			imageUrl,
-			`${screenToDisplay}_${uniqueId}.png`,
+			buildFilename(screenToDisplay),
 			dynamicRefreshRate,
 		);
 	} catch (_error) {

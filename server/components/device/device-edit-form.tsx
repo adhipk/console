@@ -38,7 +38,7 @@ import {
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { DeviceDisplayMode } from "@/lib/mixup/constants";
+import { DeviceDisplayMode, DeviceDisplayType } from "@/lib/mixup/constants";
 import {
 	DEFAULT_IMAGE_HEIGHT,
 	DEFAULT_IMAGE_WIDTH,
@@ -122,6 +122,15 @@ export default function DeviceEditForm({
 			: editedDevice.screen_width || DEFAULT_IMAGE_WIDTH;
 
 	const editedGrayscaleLevels = getGrayscaleLevels(editedDevice.grayscale);
+	const isColorDisplay = editedDevice.display_type === DeviceDisplayType.COLOR;
+
+	// Build preview image URL based on display type
+	const buildPreviewUrl = (screen: string) => {
+		if (isColorDisplay) {
+			return `/api/png/${screen}.png?width=${deviceWidth}&height=${deviceHeight}`;
+		}
+		return `/api/bitmap/${screen}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${editedGrayscaleLevels}`;
+	};
 
 	return (
 		<Card className="mb-6">
@@ -417,6 +426,39 @@ export default function DeviceEditForm({
 							<TabsContent value="display" className="space-y-4">
 								<div className="rounded-lg border p-4 space-y-4">
 									<div className="space-y-2">
+										<Label>Display Type</Label>
+										<ToggleGroup
+											type="single"
+											value={editedDevice.display_type || DeviceDisplayType.BW}
+											onValueChange={(value) => {
+												if (value) {
+													onSelectChange("display_type", value);
+												}
+											}}
+											variant="outline"
+											className="w-fit"
+										>
+											<ToggleGroupItem value={DeviceDisplayType.BW}>
+												Black & White
+											</ToggleGroupItem>
+											<ToggleGroupItem value={DeviceDisplayType.GRAYSCALE}>
+												Grayscale
+											</ToggleGroupItem>
+											<ToggleGroupItem value={DeviceDisplayType.COLOR}>
+												Color (7-color)
+											</ToggleGroupItem>
+										</ToggleGroup>
+										<p className="text-xs text-muted-foreground">
+											{editedDevice.display_type === DeviceDisplayType.COLOR
+												? "Full color output for 7-color e-ink displays like the Inky Impression Spectra"
+												: editedDevice.display_type ===
+														DeviceDisplayType.GRAYSCALE
+													? "Grayscale dithered output with configurable gray levels"
+													: "1-bit black & white dithered output (default)"}
+										</p>
+									</div>
+
+									<div className="space-y-2">
 										<Label htmlFor="device_size_preset">Device Size</Label>
 										<Select
 											value={deviceSizePreset}
@@ -496,34 +538,36 @@ export default function DeviceEditForm({
 												</SelectContent>
 											</Select>
 										</div>
-										<div className="space-y-2">
-											<Label>Grayscale Levels</Label>
-											<ToggleGroup
-												type="single"
-												value={String(editedGrayscaleLevels)}
-												onValueChange={(value) => {
-													if (value) {
-														onSelectChange("grayscale", value);
-													}
-												}}
-												variant="outline"
-												spacing={0}
-												className="w-fit"
-											>
-												<ToggleGroupItem value="2" className="flex-1">
-													2
-												</ToggleGroupItem>
-												<ToggleGroupItem value="4" className="flex-1">
-													4
-												</ToggleGroupItem>
-												<ToggleGroupItem value="16" className="flex-1">
-													16
-												</ToggleGroupItem>
-											</ToggleGroup>
-											<p className="text-xs text-muted-foreground">
-												Number of gray levels for image rendering
-											</p>
-										</div>
+										{editedDevice.display_type !== DeviceDisplayType.COLOR && (
+											<div className="space-y-2">
+												<Label>Grayscale Levels</Label>
+												<ToggleGroup
+													type="single"
+													value={String(editedGrayscaleLevels)}
+													onValueChange={(value) => {
+														if (value) {
+															onSelectChange("grayscale", value);
+														}
+													}}
+													variant="outline"
+													spacing={0}
+													className="w-fit"
+												>
+													<ToggleGroupItem value="2" className="flex-1">
+														2
+													</ToggleGroupItem>
+													<ToggleGroupItem value="4" className="flex-1">
+														4
+													</ToggleGroupItem>
+													<ToggleGroupItem value="16" className="flex-1">
+														16
+													</ToggleGroupItem>
+												</ToggleGroup>
+												<p className="text-xs text-muted-foreground">
+													Number of gray levels for image rendering
+												</p>
+											</div>
+										)}
 									</div>
 								</div>
 							</TabsContent>
@@ -686,11 +730,17 @@ export default function DeviceEditForm({
 									>
 										<AspectRatio ratio={deviceWidth / deviceHeight}>
 											<Image
-												src={`/api/bitmap/mixup/${editedDevice.mixup_id}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${editedGrayscaleLevels}`}
+												src={
+													isColorDisplay
+														? `/api/bitmap/mixup/${editedDevice.mixup_id}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${editedGrayscaleLevels}&format=png`
+														: `/api/bitmap/mixup/${editedDevice.mixup_id}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${editedGrayscaleLevels}`
+												}
 												alt="Mixup Preview"
 												fill
 												className="object-cover rounded-xs ring-2 ring-gray-200"
-												style={{ imageRendering: "pixelated" }}
+												style={
+													isColorDisplay ? {} : { imageRendering: "pixelated" }
+												}
 												unoptimized
 											/>
 										</AspectRatio>
@@ -704,11 +754,15 @@ export default function DeviceEditForm({
 									>
 										<AspectRatio ratio={deviceWidth / deviceHeight}>
 											<Image
-												src={`/api/bitmap/${editedDevice?.screen || "simple-text"}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${editedGrayscaleLevels}`}
+												src={buildPreviewUrl(
+													editedDevice?.screen || "simple-text",
+												)}
 												alt="Device Screen"
 												fill
 												className="object-cover rounded-xs ring-2 ring-gray-200"
-												style={{ imageRendering: "pixelated" }}
+												style={
+													isColorDisplay ? {} : { imageRendering: "pixelated" }
+												}
 												unoptimized
 											/>
 										</AspectRatio>

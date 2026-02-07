@@ -74,8 +74,8 @@ export default function DailyQuote({
 	category = "Wisdom",
 	date = "FRIDAY, FEBRUARY 6, 2026",
 	dayNumber = 37,
-	width = 600,
-	height = 448,
+	width = 800,
+	height = 480,
 }: DailyQuoteProps) {
 	const accent = CATEGORY_ACCENT[category] || C.orange;
 

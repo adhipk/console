@@ -199,9 +199,7 @@
 			"name": "Console",
 			"github": ""
 		},
-		"renderSettings": {
-			"doubleSizeForSharperText": true
-		},
+		"renderSettings": {},
 		"version": "1.0.0",
 		"category": "color-eink"
 	},
@@ -234,9 +232,7 @@
 			"name": "Console",
 			"github": ""
 		},
-		"renderSettings": {
-			"doubleSizeForSharperText": true
-		},
+		"renderSettings": {},
 		"version": "1.0.0",
 		"category": "color-eink"
 	},
@@ -255,9 +251,7 @@
 			"name": "Console",
 			"github": ""
 		},
-		"renderSettings": {
-			"doubleSizeForSharperText": true
-		},
+		"renderSettings": {},
 		"version": "1.0.0",
 		"category": "color-eink"
 	},
@@ -276,9 +270,7 @@
 			"name": "Console",
 			"github": ""
 		},
-		"renderSettings": {
-			"doubleSizeForSharperText": true
-		},
+		"renderSettings": {},
 		"version": "1.0.0",
 		"category": "color-eink"
 	},

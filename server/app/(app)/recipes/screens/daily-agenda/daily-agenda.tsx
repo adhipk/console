@@ -186,8 +186,8 @@ export default function DailyAgenda({
 		{ title: "Grocery shopping", done: false, priority: "low" as const },
 		{ title: "Schedule dentist appt", done: true, priority: "low" as const },
 	],
-	width = 600,
-	height = 448,
+	width = 800,
+	height = 480,
 }: DailyAgendaProps) {
 	const completedCount = tasks.filter((t) => t.done).length;
 
