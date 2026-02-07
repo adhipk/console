@@ -274,6 +274,99 @@
 		"version": "1.0.0",
 		"category": "color-eink"
 	},
+	"color-world-clock": {
+		"title": "Color World Clock",
+		"published": true,
+		"createdAt": "2026-02-07T00:00:00Z",
+		"updatedAt": "2026-02-07T00:00:00Z",
+		"description": "Six world clocks with analog faces, day/night color indicators, and UTC offset badges. Designed for 7-color e-ink displays.",
+		"componentPath": "./screens/color-world-clock",
+		"hasDataFetch": true,
+		"props": {},
+		"params": {
+			"cities": {
+				"type": "string",
+				"label": "Cities",
+				"description": "Comma-separated list of city names (e.g., 'Tokyo, London, New York'). Max 6 cities.",
+				"default": "San Francisco, New York, London, Berlin, Tokyo, Sydney",
+				"placeholder": "San Francisco, New York, London, Berlin, Tokyo, Sydney"
+			}
+		},
+		"tags": [
+			"color",
+			"e-ink",
+			"world-clock",
+			"time-zones",
+			"configurable"
+		],
+		"author": {
+			"name": "Console",
+			"github": ""
+		},
+		"renderSettings": {},
+		"version": "1.0.0",
+		"category": "color-eink"
+	},
+	"color-habit-tracker": {
+		"title": "Color Habit Tracker",
+		"published": true,
+		"createdAt": "2026-02-07T00:00:00Z",
+		"updatedAt": "2026-02-07T00:00:00Z",
+		"description": "Weekly habit tracking grid with color-coded completion status, streak counters, and progress percentage. Optimized for 7-color e-ink displays.",
+		"componentPath": "./screens/color-habit-tracker",
+		"hasDataFetch": true,
+		"props": {},
+		"params": {},
+		"tags": [
+			"color",
+			"e-ink",
+			"habits",
+			"productivity",
+			"tracker",
+			"live-data"
+		],
+		"author": {
+			"name": "Console",
+			"github": ""
+		},
+		"renderSettings": {},
+		"version": "1.0.0",
+		"category": "color-eink"
+	},
+	"color-air-quality": {
+		"title": "Color Air Quality",
+		"published": true,
+		"createdAt": "2026-02-07T00:00:00Z",
+		"updatedAt": "2026-02-07T00:00:00Z",
+		"description": "Air quality index dashboard with colored AQI gauge, pollutant level bars, and health advice. Header color changes dynamically based on AQI level. Uses the free Open-Meteo Air Quality API.",
+		"componentPath": "./screens/color-air-quality",
+		"hasDataFetch": true,
+		"props": {},
+		"params": {
+			"location": {
+				"type": "string",
+				"label": "Location",
+				"description": "City or place name for air quality data",
+				"default": "San Francisco"
+			}
+		},
+		"tags": [
+			"color",
+			"e-ink",
+			"air-quality",
+			"health",
+			"environment",
+			"live-data",
+			"configurable"
+		],
+		"author": {
+			"name": "Console",
+			"github": ""
+		},
+		"renderSettings": {},
+		"version": "1.0.0",
+		"category": "color-eink"
+	},
 	"not-found": {
 		"title": "Not Found Recipe",
 		"published": true,
