@@ -87,7 +87,7 @@ export async function GET(request: Request) {
 			return buildErrorResponse("Device not found", baseBmpUrl, uniqueId);
 		}
 
-		let screenToDisplay = device.screen;
+		let screenToDisplay = device.screen || DEFAULT_SCREEN;
 		const orientation = device.screen_orientation || "landscape";
 		const deviceWidth =
 			orientation === "landscape"
@@ -100,8 +100,12 @@ export async function GET(request: Request) {
 		const grayscaleLevels = getGrayscaleLevels(
 			(device as { grayscale?: number | null }).grayscale ?? null,
 		);
-		let dynamicRefreshRate = 180;
+		let dynamicRefreshRate = DEFAULT_REFRESH_RATE;
 		let imageUrl: string;
+
+		// Helper to build image URL - use color PNG for color e-ink screens
+		const buildImageUrl = (screen: string) =>
+			`${basePngUrl}/${screen}.png?width=${deviceWidth}&height=${deviceHeight}`;
 
 		switch (device.display_mode) {
 			case DeviceDisplayMode.PLAYLIST:
@@ -126,11 +130,11 @@ export async function GET(request: Request) {
 							source: "api/display",
 							metadata: { deviceId: device.friendly_id },
 						});
-						screenToDisplay = device.screen || "not-found";
+						screenToDisplay = device.screen || DEFAULT_SCREEN;
 						dynamicRefreshRate = 60;
 					}
 				}
-				imageUrl = `${baseBmpUrl}/${screenToDisplay || "not-found"}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${grayscaleLevels}`;
+				imageUrl = buildImageUrl(screenToDisplay);
 				break;
 
 			case DeviceDisplayMode.MIXUP:
@@ -145,11 +149,11 @@ export async function GET(request: Request) {
 						metadata,
 					});
 				} else {
-					imageUrl = `${baseBmpUrl}/${screenToDisplay || "not-found"}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${grayscaleLevels}`;
+					imageUrl = buildImageUrl(screenToDisplay);
 				}
 				dynamicRefreshRate = calculateRefreshRate(
 					device.refresh_schedule as unknown as RefreshSchedule,
-					180,
+					DEFAULT_REFRESH_RATE,
 					device.timezone || "UTC",
 				);
 				break;
@@ -157,10 +161,10 @@ export async function GET(request: Request) {
 			default:
 				dynamicRefreshRate = calculateRefreshRate(
 					device.refresh_schedule as unknown as RefreshSchedule,
-					180,
+					DEFAULT_REFRESH_RATE,
 					device.timezone || "UTC",
 				);
-				imageUrl = `${baseBmpUrl}/${screenToDisplay || "not-found"}.bmp?width=${deviceWidth}&height=${deviceHeight}&grayscale=${grayscaleLevels}`;
+				imageUrl = buildImageUrl(screenToDisplay);
 				break;
 		}
 
@@ -178,7 +182,7 @@ export async function GET(request: Request) {
 
 		return buildDisplayResponse(
 			imageUrl,
-			`${screenToDisplay || "not-found"}_${uniqueId}.bmp`,
+			`${screenToDisplay}_${uniqueId}.png`,
 			dynamicRefreshRate,
 		);
 	} catch (_error) {
