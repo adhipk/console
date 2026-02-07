@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { cache } from "react";
+import sharp from "sharp";
 import NotFoundScreen from "@/app/(app)/recipes/screens/not-found/not-found";
 import screens from "@/app/(app)/recipes/screens.json";
 import {
@@ -7,6 +8,7 @@ import {
 	buildRecipeElement,
 	DEFAULT_IMAGE_HEIGHT,
 	DEFAULT_IMAGE_WIDTH,
+	getRecipeImageOptions,
 	logger,
 	renderRecipeOutputs,
 } from "@/lib/recipes/recipe-renderer";
@@ -94,7 +96,21 @@ const renderRecipePng = cache(
 			formats: ["png"],
 		});
 
-		return renders.png ?? Buffer.from([]);
+		let pngBuffer = renders.png ?? Buffer.from([]);
+
+		// If doubleSizeForSharperText is enabled, the renderer outputs at 2x.
+		// Downscale back to the requested dimensions for the display.
+		if (pngBuffer.length > 0) {
+			const imageOptions = getRecipeImageOptions(config ?? null, width, height);
+			if (imageOptions.width !== width || imageOptions.height !== height) {
+				pngBuffer = await sharp(pngBuffer)
+					.resize(width, height, { fit: "fill" })
+					.png()
+					.toBuffer();
+			}
+		}
+
+		return pngBuffer;
 	},
 );
 
