@@ -348,10 +348,17 @@ func displayImage(imagePath string, options AppOptions, frames int) error {
         } else {
               sb3.WriteString("partial") // partial = no flicker/flash
         }
-        err := exec.Command("show_img", sb.String(), sb2.String(), sb3.String()).Run()
+        cmd := exec.Command("show_img", sb.String(), sb2.String(), sb3.String())
+        output, err := cmd.CombinedOutput()
         if err != nil {
-		fmt.Println("show_img tool missing; build it and try again; error = %v", err)
-		os.Exit(0);
+		fmt.Printf("show_img failed; error: %v\n", err)
+		if len(output) > 0 {
+			fmt.Printf("show_img output: %s\n", string(output))
+		}
+		if pathErr, ok := err.(*exec.Error); ok {
+			fmt.Printf("show_img tool missing at expected path; build it and try again (%v)\n", pathErr)
+		}
+		os.Exit(1)
         }
 	if options.Verbose {
 		fmt.Printf("Displayed: %s\n", imagePath)
