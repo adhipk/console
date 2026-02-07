@@ -174,7 +174,7 @@
 		"published": true,
 		"createdAt": "2026-02-06T00:00:00Z",
 		"updatedAt": "2026-02-06T00:00:00Z",
-		"description": "A composite e-ink dashboard with weather, calendar, time, and daily quote. Optimized for 7-color displays like the Inky Impression 5.7\" (600x448).",
+		"description": "A composite e-ink dashboard with weather, calendar, time, and daily quote. Optimized for 7-color displays like the Inky Impression 7.3\" (800x480).",
 		"componentPath": "./screens/color-dashboard",
 		"hasDataFetch": true,
 		"props": {},
@@ -199,7 +199,9 @@
 			"name": "Console",
 			"github": ""
 		},
-		"renderSettings": {},
+		"renderSettings": {
+			"doubleSizeForSharperText": true
+		},
 		"version": "1.0.0",
 		"category": "color-eink"
 	},
@@ -232,7 +234,9 @@
 			"name": "Console",
 			"github": ""
 		},
-		"renderSettings": {},
+		"renderSettings": {
+			"doubleSizeForSharperText": true
+		},
 		"version": "1.0.0",
 		"category": "color-eink"
 	},
@@ -251,7 +255,9 @@
 			"name": "Console",
 			"github": ""
 		},
-		"renderSettings": {},
+		"renderSettings": {
+			"doubleSizeForSharperText": true
+		},
 		"version": "1.0.0",
 		"category": "color-eink"
 	},
@@ -270,7 +276,9 @@
 			"name": "Console",
 			"github": ""
 		},
-		"renderSettings": {},
+		"renderSettings": {
+			"doubleSizeForSharperText": true
+		},
 		"version": "1.0.0",
 		"category": "color-eink"
 	},
