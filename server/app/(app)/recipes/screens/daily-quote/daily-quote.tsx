@@ -40,6 +40,8 @@ const CATEGORY_ACCENT: Record<string, string> = {
 function QuoteMark({ color }: { color: string }) {
 	return (
 		<svg
+			role="img"
+			aria-label="Quote"
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 100 80"
 			width="60"

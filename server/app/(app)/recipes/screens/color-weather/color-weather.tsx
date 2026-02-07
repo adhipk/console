@@ -16,6 +16,8 @@ function WeatherIcon({ code, size = 80 }: { code: number; size?: number }) {
 	if (code <= 1) {
 		return (
 			<svg
+				role="img"
+				aria-label="Sunny"
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
 				width={size}
@@ -40,6 +42,8 @@ function WeatherIcon({ code, size = 80 }: { code: number; size?: number }) {
 	if (code <= 3 || code === 45 || code === 48) {
 		return (
 			<svg
+				role="img"
+				aria-label="Cloudy"
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
 				width={size}
@@ -57,6 +61,8 @@ function WeatherIcon({ code, size = 80 }: { code: number; size?: number }) {
 	if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
 		return (
 			<svg
+				role="img"
+				aria-label="Rain"
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
 				width={size}
@@ -102,6 +108,8 @@ function WeatherIcon({ code, size = 80 }: { code: number; size?: number }) {
 	if ((code >= 71 && code <= 77) || code === 85 || code === 86) {
 		return (
 			<svg
+				role="img"
+				aria-label="Snow"
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
 				width={size}
@@ -123,6 +131,8 @@ function WeatherIcon({ code, size = 80 }: { code: number; size?: number }) {
 	if (code >= 95) {
 		return (
 			<svg
+				role="img"
+				aria-label="Thunderstorm"
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 24 24"
 				width={size}
@@ -141,6 +151,8 @@ function WeatherIcon({ code, size = 80 }: { code: number; size?: number }) {
 	}
 	return (
 		<svg
+			role="img"
+			aria-label="Cloud"
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 24 24"
 			width={size}

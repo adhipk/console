@@ -58,6 +58,8 @@ function Checkbox({ done }: { done: boolean }) {
 	if (done) {
 		return (
 			<svg
+				role="img"
+				aria-label="Completed"
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 20 20"
 				width="16"
@@ -86,6 +88,8 @@ function Checkbox({ done }: { done: boolean }) {
 	}
 	return (
 		<svg
+			role="img"
+			aria-label="Pending"
 			xmlns="http://www.w3.org/2000/svg"
 			viewBox="0 0 20 20"
 			width="16"
