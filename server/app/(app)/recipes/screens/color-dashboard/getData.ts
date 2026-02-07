@@ -236,13 +236,54 @@ function getDateTime(): {
 	};
 }
 
-function getSampleEvents(): CalendarEvent[] {
-	return [
-		{ time: "9:00 AM", title: "Team standup", color: "blue" },
-		{ time: "11:30 AM", title: "Design review", color: "green" },
-		{ time: "1:00 PM", title: "Lunch with Sarah", color: "orange" },
-		{ time: "3:30 PM", title: "Sprint planning", color: "red" },
+function getEventsForDay(): CalendarEvent[] {
+	const dayOfWeek = new Date().getDay(); // 0=Sun, 6=Sat
+	const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+
+	if (isWeekend) {
+		return [
+			{ time: "10:00 AM", title: "Brunch", color: "orange" },
+			{ time: "1:00 PM", title: "Outdoor walk", color: "green" },
+			{ time: "4:00 PM", title: "Read a book", color: "blue" },
+		];
+	}
+
+	const weekdayEvents: CalendarEvent[][] = [
+		[], // Sunday (handled above)
+		[ // Monday
+			{ time: "9:00 AM", title: "Team standup", color: "blue" },
+			{ time: "10:00 AM", title: "Sprint planning", color: "red" },
+			{ time: "1:00 PM", title: "Lunch break", color: "orange" },
+			{ time: "3:00 PM", title: "Deep work block", color: "green" },
+		],
+		[ // Tuesday
+			{ time: "9:00 AM", title: "Team standup", color: "blue" },
+			{ time: "11:00 AM", title: "Design review", color: "green" },
+			{ time: "1:00 PM", title: "Lunch break", color: "orange" },
+			{ time: "3:30 PM", title: "Code review", color: "blue" },
+		],
+		[ // Wednesday
+			{ time: "9:00 AM", title: "Team standup", color: "blue" },
+			{ time: "10:30 AM", title: "1:1 with manager", color: "red" },
+			{ time: "1:00 PM", title: "Lunch break", color: "orange" },
+			{ time: "2:30 PM", title: "Project sync", color: "green" },
+		],
+		[ // Thursday
+			{ time: "9:00 AM", title: "Team standup", color: "blue" },
+			{ time: "11:00 AM", title: "Architecture review", color: "green" },
+			{ time: "1:00 PM", title: "Lunch break", color: "orange" },
+			{ time: "3:00 PM", title: "Demo prep", color: "red" },
+		],
+		[ // Friday
+			{ time: "9:00 AM", title: "Team standup", color: "blue" },
+			{ time: "11:00 AM", title: "Team retro", color: "green" },
+			{ time: "1:00 PM", title: "Lunch break", color: "orange" },
+			{ time: "3:00 PM", title: "Weekly wrap-up", color: "red" },
+		],
+		[], // Saturday (handled above)
 	];
+
+	return weekdayEvents[dayOfWeek];
 }
 
 const getCachedDashboardData = unstable_cache(
@@ -254,7 +295,7 @@ const getCachedDashboardData = unstable_cache(
 
 		return {
 			weather,
-			events: getSampleEvents(),
+			events: getEventsForDay(),
 			quote,
 			dateTime: getDateTime(),
 		};
@@ -283,7 +324,7 @@ export default async function getData(
 		]);
 		return {
 			weather,
-			events: getSampleEvents(),
+			events: getEventsForDay(),
 			quote,
 			dateTime: getDateTime(),
 		};

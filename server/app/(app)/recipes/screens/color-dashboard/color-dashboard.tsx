@@ -11,9 +11,8 @@ const C = {
 	orange: "#FF8000",
 } as const;
 
-/* ── Weather icons (inline SVG, colored for e-ink) ─────────────────── */
-function WeatherIcon({ code, size = 64 }: { code: number; size?: number }) {
-	// Sun-like codes
+/* ── Weather icon ──────────────────────────────────────────────────── */
+function WeatherIcon({ code, size = 48 }: { code: number; size?: number }) {
 	if (code <= 1) {
 		return (
 			<svg
@@ -40,7 +39,6 @@ function WeatherIcon({ code, size = 64 }: { code: number; size?: number }) {
 			</svg>
 		);
 	}
-	// Cloudy
 	if (code <= 3 || code === 45 || code === 48) {
 		return (
 			<svg
@@ -50,8 +48,6 @@ function WeatherIcon({ code, size = 64 }: { code: number; size?: number }) {
 				viewBox="0 0 24 24"
 				width={size}
 				height={size}
-				fill={C.black}
-				stroke="none"
 			>
 				<path
 					d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"
@@ -62,7 +58,6 @@ function WeatherIcon({ code, size = 64 }: { code: number; size?: number }) {
 			</svg>
 		);
 	}
-	// Rain / drizzle
 	if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) {
 		return (
 			<svg
@@ -73,9 +68,6 @@ function WeatherIcon({ code, size = 64 }: { code: number; size?: number }) {
 				width={size}
 				height={size}
 				fill="none"
-				stroke={C.blue}
-				strokeWidth="2"
-				strokeLinecap="round"
 			>
 				<path
 					d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"
@@ -83,13 +75,12 @@ function WeatherIcon({ code, size = 64 }: { code: number; size?: number }) {
 					stroke={C.black}
 					strokeWidth="1.5"
 				/>
-				<line x1="8" y1="19" x2="8" y2="22" stroke={C.blue} />
-				<line x1="12" y1="19" x2="12" y2="22" stroke={C.blue} />
-				<line x1="16" y1="19" x2="16" y2="22" stroke={C.blue} />
+				<line x1="8" y1="19" x2="8" y2="22" stroke={C.blue} strokeWidth="2" strokeLinecap="round" />
+				<line x1="12" y1="19" x2="12" y2="22" stroke={C.blue} strokeWidth="2" strokeLinecap="round" />
+				<line x1="16" y1="19" x2="16" y2="22" stroke={C.blue} strokeWidth="2" strokeLinecap="round" />
 			</svg>
 		);
 	}
-	// Snow
 	if ((code >= 71 && code <= 77) || code === 85 || code === 86) {
 		return (
 			<svg
@@ -100,8 +91,6 @@ function WeatherIcon({ code, size = 64 }: { code: number; size?: number }) {
 				width={size}
 				height={size}
 				fill="none"
-				stroke={C.blue}
-				strokeWidth="2"
 			>
 				<path
 					d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"
@@ -115,7 +104,6 @@ function WeatherIcon({ code, size = 64 }: { code: number; size?: number }) {
 			</svg>
 		);
 	}
-	// Thunderstorm
 	if (code >= 95) {
 		return (
 			<svg
@@ -137,7 +125,6 @@ function WeatherIcon({ code, size = 64 }: { code: number; size?: number }) {
 			</svg>
 		);
 	}
-	// Default cloud
 	return (
 		<svg
 			role="img"
@@ -146,22 +133,18 @@ function WeatherIcon({ code, size = 64 }: { code: number; size?: number }) {
 			viewBox="0 0 24 24"
 			width={size}
 			height={size}
-			fill={C.white}
-			stroke={C.black}
-			strokeWidth="1.5"
 		>
-			<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+			<path
+				d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"
+				fill={C.white}
+				stroke={C.black}
+				strokeWidth="1.5"
+			/>
 		</svg>
 	);
 }
 
-function SmallWeatherIcon({
-	code,
-	size = 28,
-}: {
-	code: number;
-	size?: number;
-}) {
+function SmallWeatherIcon({ code, size = 22 }: { code: number; size?: number }) {
 	return <WeatherIcon code={code} size={size} />;
 }
 
@@ -200,38 +183,84 @@ interface DashboardProps {
 	height?: number;
 }
 
+/* ── Dynamic defaults ──────────────────────────────────────────────── */
+function getDefaultDateTime() {
+	const now = new Date();
+	return {
+		date: now
+			.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+			.toUpperCase(),
+		time: now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }),
+		dayOfWeek: now
+			.toLocaleDateString("en-US", { weekday: "long" })
+			.toUpperCase(),
+	};
+}
+
+function getDefaultForecast(): Array<{ day: string; high: string; low: string; code: number }> {
+	const now = new Date();
+	return [1, 2, 3].map((offset) => {
+		const d = new Date(now);
+		d.setDate(d.getDate() + offset);
+		return {
+			day: d.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase(),
+			high: "--",
+			low: "--",
+			code: 0,
+		};
+	});
+}
+
+function getDefaultEvents(): CalendarEvent[] {
+	const day = new Date().getDay();
+	if (day === 0 || day === 6) {
+		return [
+			{ time: "10:00 AM", title: "Brunch", color: "orange" },
+			{ time: "1:00 PM", title: "Outdoor walk", color: "green" },
+			{ time: "4:00 PM", title: "Read a book", color: "blue" },
+		];
+	}
+	return [
+		{ time: "9:00 AM", title: "Team standup", color: "blue" },
+		{ time: "11:30 AM", title: "Design review", color: "green" },
+		{ time: "1:00 PM", title: "Lunch break", color: "orange" },
+		{ time: "3:30 PM", title: "Sprint planning", color: "red" },
+	];
+}
+
+const DEFAULT_QUOTES = [
+	{ text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
+	{ text: "Simplicity is the ultimate sophistication.", author: "Leonardo da Vinci" },
+	{ text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
+	{ text: "In the middle of difficulty lies opportunity.", author: "Albert Einstein" },
+	{ text: "What you do today can improve all your tomorrows.", author: "Ralph Marston" },
+	{ text: "The journey of a thousand miles begins with a single step.", author: "Lao Tzu" },
+	{ text: "Be yourself; everyone else is already taken.", author: "Oscar Wilde" },
+];
+
+function getDefaultQuote() {
+	const now = new Date();
+	const start = new Date(now.getFullYear(), 0, 0);
+	const dayOfYear = Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+	return DEFAULT_QUOTES[dayOfYear % DEFAULT_QUOTES.length];
+}
+
 /* ── Main Component ─────────────────────────────────────────────────── */
 export default function ColorDashboard({
 	weather = {
-		temperature: "72",
-		description: "Sunny",
+		temperature: "--",
+		description: "Loading...",
 		weatherCode: 0,
 		location: "San Francisco, US",
-		highTemp: "78",
-		lowTemp: "61",
-		humidity: "45",
-		windSpeed: "8",
-		forecast: [
-			{ day: "SAT", high: "76", low: "59", code: 1 },
-			{ day: "SUN", high: "71", low: "55", code: 3 },
-			{ day: "MON", high: "68", low: "52", code: 61 },
-		],
+		highTemp: "--",
+		lowTemp: "--",
+		humidity: "--",
+		windSpeed: "--",
+		forecast: getDefaultForecast(),
 	},
-	events = [
-		{ time: "9:00 AM", title: "Team standup", color: "blue" as const },
-		{ time: "11:30 AM", title: "Design review", color: "green" as const },
-		{ time: "1:00 PM", title: "Lunch with Sarah", color: "orange" as const },
-		{ time: "3:30 PM", title: "Sprint planning", color: "red" as const },
-	],
-	quote = {
-		text: "The best time to plant a tree was 20 years ago. The second best time is now.",
-		author: "Chinese Proverb",
-	},
-	dateTime = {
-		date: "FEB 6, 2026",
-		time: "8:42 AM",
-		dayOfWeek: "FRIDAY",
-	},
+	events = getDefaultEvents(),
+	quote = getDefaultQuote(),
+	dateTime = getDefaultDateTime(),
 	width = 800,
 	height = 480,
 }: DashboardProps) {
@@ -247,103 +276,164 @@ export default function ColorDashboard({
 			<div
 				style={{
 					display: "flex",
-					flexDirection: "column",
+					flexDirection: "row",
 					width: "100%",
 					height: "100%",
 					backgroundColor: C.white,
-					fontFamily: "Inter, sans-serif",
 				}}
 			>
-				{/* ── Header: Date + Time ──────────────────────────────── */}
+				{/* ══════════════════════════════════════════════════════
+				    LEFT: Time sidebar — the dramatic anchor
+				    ══════════════════════════════════════════════════════ */}
 				<div
 					style={{
 						display: "flex",
-						flexDirection: "row",
-						alignItems: "center",
-						justifyContent: "space-between",
-						padding: "12px 20px",
+						flexDirection: "column",
+						width: "220px",
 						backgroundColor: C.black,
-						color: C.white,
+						padding: "28px 20px",
+						justifyContent: "space-between",
 					}}
 				>
-					<div
-						style={{
-							display: "flex",
-							flexDirection: "row",
-							alignItems: "baseline",
-						}}
-					>
+					{/* Day of week */}
+					<div style={{ display: "flex", flexDirection: "column" }}>
 						<span
 							style={{
-								fontSize: "22px",
+								fontSize: "20px",
 								fontWeight: 700,
-								letterSpacing: "1px",
 								color: C.yellow,
+								letterSpacing: "4px",
 							}}
 						>
 							{dateTime.dayOfWeek}
 						</span>
 						<span
 							style={{
-								fontSize: "16px",
-								marginLeft: "12px",
-								color: C.white,
+								fontSize: "13px",
 								fontWeight: 400,
+								color: C.white,
+								marginTop: "4px",
+								letterSpacing: "1px",
 							}}
 						>
 							{dateTime.date}
 						</span>
 					</div>
-					<span
-						style={{
-							fontSize: "28px",
-							fontWeight: 700,
-							color: C.white,
-						}}
-					>
-						{dateTime.time}
-					</span>
-				</div>
 
-				{/* ── Main Content: Weather + Calendar ─────────────────── */}
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "row",
-						flex: 1,
-						padding: "12px 16px",
-					}}
-				>
-					{/* ── Left: Weather ─────────────────────────────────── */}
+					{/* Large time display */}
 					<div
 						style={{
 							display: "flex",
 							flexDirection: "column",
-							width: "52%",
-							paddingRight: "16px",
-							borderRight: `2px solid ${C.black}`,
+							alignItems: "flex-start",
 						}}
 					>
-						{/* Current weather */}
+						<span
+							style={{
+								fontSize: "56px",
+								fontWeight: 700,
+								color: C.white,
+								lineHeight: 1,
+								letterSpacing: "-2px",
+							}}
+						>
+							{dateTime.time.replace(/ AM| PM/i, "")}
+						</span>
+						<span
+							style={{
+								fontSize: "18px",
+								fontWeight: 400,
+								color: C.white,
+								opacity: 0.7,
+								marginTop: "4px",
+							}}
+						>
+							{dateTime.time.includes("AM") ? "AM" : "PM"}
+						</span>
+					</div>
+
+					{/* Event count badge */}
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "row",
+							alignItems: "center",
+						}}
+					>
 						<div
 							style={{
 								display: "flex",
-								flexDirection: "row",
+								width: "28px",
+								height: "28px",
+								backgroundColor: C.green,
+								borderRadius: "14px",
 								alignItems: "center",
-								marginBottom: "8px",
+								justifyContent: "center",
 							}}
 						>
-							<WeatherIcon code={weather.weatherCode} size={56} />
+							<span
+								style={{
+									fontSize: "14px",
+									fontWeight: 700,
+									color: C.white,
+								}}
+							>
+								{events.length}
+							</span>
+						</div>
+						<span
+							style={{
+								fontSize: "11px",
+								color: C.white,
+								marginLeft: "8px",
+								fontWeight: 400,
+								opacity: 0.6,
+							}}
+						>
+							events today
+						</span>
+					</div>
+				</div>
+
+				{/* ══════════════════════════════════════════════════════
+				    RIGHT: Content area
+				    ══════════════════════════════════════════════════════ */}
+				<div
+					style={{
+						display: "flex",
+						flexDirection: "column",
+						flex: 1,
+					}}
+				>
+					{/* ── Weather block ────────────────────────────────── */}
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "row",
+							padding: "16px 20px",
+							borderBottom: `2px solid ${C.black}`,
+							alignItems: "center",
+						}}
+					>
+						{/* Icon + temp */}
+						<WeatherIcon code={weather.weatherCode} size={52} />
+						<div
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								marginLeft: "12px",
+							}}
+						>
 							<div
 								style={{
 									display: "flex",
-									flexDirection: "column",
-									marginLeft: "12px",
+									flexDirection: "row",
+									alignItems: "baseline",
 								}}
 							>
 								<span
 									style={{
-										fontSize: "48px",
+										fontSize: "42px",
 										fontWeight: 700,
 										lineHeight: 1,
 										color: C.black,
@@ -354,176 +444,196 @@ export default function ColorDashboard({
 								<span
 									style={{
 										fontSize: "14px",
-										color: C.black,
 										fontWeight: 500,
-										marginTop: "2px",
+										color: C.black,
+										marginLeft: "8px",
 									}}
 								>
 									{weather.description}
 								</span>
 							</div>
-						</div>
-
-						{/* High / Low */}
-						<div
-							style={{
-								display: "flex",
-								flexDirection: "row",
-								alignItems: "center",
-								marginBottom: "8px",
-								fontSize: "14px",
-							}}
-						>
-							<span style={{ color: C.red, fontWeight: 700 }}>
-								H: {weather.highTemp}°
-							</span>
-							<span
+							<div
 								style={{
-									color: C.blue,
-									fontWeight: 700,
-									marginLeft: "16px",
+									display: "flex",
+									flexDirection: "row",
+									alignItems: "center",
+									marginTop: "2px",
 								}}
 							>
-								L: {weather.lowTemp}°
-							</span>
-							<span
-								style={{
-									color: C.black,
-									marginLeft: "16px",
-									fontSize: "12px",
-								}}
-							>
-								{weather.humidity}% hum · {weather.windSpeed} km/h
-							</span>
+								<span style={{ fontSize: "13px", fontWeight: 700, color: C.red }}>
+									{weather.highTemp}°
+								</span>
+								<span
+									style={{
+										fontSize: "13px",
+										fontWeight: 700,
+										color: C.blue,
+										marginLeft: "10px",
+									}}
+								>
+									{weather.lowTemp}°
+								</span>
+								<span
+									style={{
+										fontSize: "11px",
+										color: C.black,
+										marginLeft: "14px",
+										opacity: 0.5,
+									}}
+								>
+									{weather.humidity}% hum
+								</span>
+								<span
+									style={{
+										fontSize: "11px",
+										color: C.black,
+										marginLeft: "10px",
+										opacity: 0.5,
+									}}
+								>
+									{weather.windSpeed} km/h
+								</span>
+							</div>
 						</div>
 
 						{/* Location */}
 						<div
 							style={{
 								display: "flex",
-								fontSize: "12px",
-								color: C.black,
-								marginBottom: "12px",
-								fontWeight: 500,
+								flexDirection: "column",
+								marginLeft: "auto",
+								alignItems: "flex-end",
 							}}
 						>
-							{weather.location}
-						</div>
-
-						{/* 3-day forecast */}
-						<div
-							style={{
-								display: "flex",
-								flexDirection: "row",
-								justifyContent: "space-between",
-								flex: 1,
-							}}
-						>
-							{weather.forecast.map((day) => (
-								<div
-									key={day.day}
-									style={{
-										display: "flex",
-										flexDirection: "column",
-										alignItems: "center",
-										flex: 1,
-										padding: "8px 4px",
-										border: `1.5px solid ${C.black}`,
-										borderRadius: "8px",
-										marginRight: "6px",
-									}}
-								>
-									<span
-										style={{
-											fontSize: "13px",
-											fontWeight: 700,
-											color: C.black,
-											marginBottom: "4px",
-										}}
-									>
-										{day.day}
-									</span>
-									<SmallWeatherIcon code={day.code} size={24} />
-									<div
-										style={{
-											display: "flex",
-											flexDirection: "row",
-											marginTop: "4px",
-											fontSize: "12px",
-										}}
-									>
-										<span style={{ color: C.red, fontWeight: 600 }}>
-											{day.high}°
-										</span>
-										<span
-											style={{
-												color: C.blue,
-												fontWeight: 600,
-												marginLeft: "4px",
-											}}
-										>
-											{day.low}°
-										</span>
-									</div>
-								</div>
-							))}
+							<span
+								style={{
+									fontSize: "11px",
+									fontWeight: 600,
+									color: C.black,
+									letterSpacing: "1px",
+								}}
+							>
+								{weather.location}
+							</span>
 						</div>
 					</div>
 
-					{/* ── Right: Calendar ───────────────────────────────── */}
+					{/* ── Forecast strip ───────────────────────────────── */}
 					<div
 						style={{
 							display: "flex",
-							flexDirection: "column",
-							width: "48%",
-							paddingLeft: "16px",
+							flexDirection: "row",
+							borderBottom: `2px solid ${C.black}`,
 						}}
 					>
-						<span
-							style={{
-								fontSize: "14px",
-								fontWeight: 700,
-								color: C.black,
-								marginBottom: "10px",
-								letterSpacing: "1px",
-							}}
-						>
-							TODAY
-						</span>
-
-						{events.map((event, i) => (
+						{weather.forecast.map((day, i) => (
 							<div
-								key={i}
+								key={day.day}
 								style={{
 									display: "flex",
 									flexDirection: "row",
 									alignItems: "center",
-									marginBottom: "10px",
+									flex: 1,
+									padding: "8px 12px",
+									borderRight:
+										i < weather.forecast.length - 1
+											? `1px solid #D0D0D0`
+											: "none",
 								}}
 							>
-								{/* Color indicator bar */}
-								<div
+								<span
 									style={{
-										width: "4px",
-										height: "36px",
-										backgroundColor: eventColors[event.color] || C.black,
-										borderRadius: "2px",
-										marginRight: "10px",
-										flexShrink: 0,
-									}}
-								/>
-								<div
-									style={{
-										display: "flex",
-										flexDirection: "column",
+										fontSize: "12px",
+										fontWeight: 700,
+										color: C.black,
+										width: "32px",
 									}}
 								>
+									{day.day}
+								</span>
+								<SmallWeatherIcon code={day.code} size={20} />
+								<span
+									style={{
+										fontSize: "12px",
+										fontWeight: 700,
+										color: C.red,
+										marginLeft: "6px",
+									}}
+								>
+									{day.high}°
+								</span>
+								<span
+									style={{
+										fontSize: "12px",
+										fontWeight: 700,
+										color: C.blue,
+										marginLeft: "4px",
+									}}
+								>
+									{day.low}°
+								</span>
+							</div>
+						))}
+					</div>
+
+					{/* ── Events ───────────────────────────────────────── */}
+					<div
+						style={{
+							display: "flex",
+							flexDirection: "column",
+							flex: 1,
+							padding: "14px 20px",
+						}}
+					>
+						<span
+							style={{
+								fontSize: "11px",
+								fontWeight: 700,
+								color: C.black,
+								letterSpacing: "2px",
+								opacity: 0.4,
+								marginBottom: "10px",
+							}}
+						>
+							AGENDA
+						</span>
+
+						<div
+							style={{
+								display: "flex",
+								flexDirection: "column",
+								flex: 1,
+								justifyContent: "space-between",
+							}}
+						>
+							{events.map((event, i) => (
+								<div
+									key={i}
+									style={{
+										display: "flex",
+										flexDirection: "row",
+										alignItems: "center",
+									}}
+								>
+									{/* Thick color bar */}
+									<div
+										style={{
+											width: "5px",
+											height: "34px",
+											backgroundColor: eventColors[event.color] || C.black,
+											borderRadius: "2px",
+											marginRight: "12px",
+											flexShrink: 0,
+										}}
+									/>
 									<span
 										style={{
-											fontSize: "11px",
+											fontSize: "12px",
 											color: C.black,
 											fontWeight: 400,
-											opacity: 0.7,
+											width: "68px",
+											opacity: 0.5,
+											flexShrink: 0,
 										}}
 									>
 										{event.time}
@@ -538,60 +648,49 @@ export default function ColorDashboard({
 										{event.title}
 									</span>
 								</div>
-							</div>
-						))}
+							))}
+						</div>
 					</div>
-				</div>
 
-				{/* ── Footer: Daily Quote ──────────────────────────────── */}
-				<div
-					style={{
-						display: "flex",
-						flexDirection: "row",
-						alignItems: "center",
-						padding: "10px 20px",
-						borderTop: `2px solid ${C.black}`,
-						backgroundColor: C.white,
-					}}
-				>
-					<div
-						style={{
-							width: "4px",
-							height: "32px",
-							backgroundColor: C.orange,
-							borderRadius: "2px",
-							marginRight: "12px",
-							flexShrink: 0,
-						}}
-					/>
+					{/* ── Quote block with bold colored background ──────── */}
 					<div
 						style={{
 							display: "flex",
-							flexDirection: "column",
-							flex: 1,
+							flexDirection: "row",
+							alignItems: "center",
+							padding: "12px 20px",
+							backgroundColor: C.orange,
 						}}
 					>
-						<span
+						<div
 							style={{
-								fontSize: "12px",
-								color: C.black,
-								fontWeight: 400,
-								fontStyle: "italic",
-								lineHeight: 1.3,
+								display: "flex",
+								flexDirection: "column",
+								flex: 1,
 							}}
 						>
-							"{quote.text}"
-						</span>
-						<span
-							style={{
-								fontSize: "11px",
-								color: C.black,
-								fontWeight: 600,
-								marginTop: "2px",
-							}}
-						>
-							— {quote.author}
-						</span>
+							<span
+								style={{
+									fontSize: "12px",
+									color: C.white,
+									fontWeight: 500,
+									fontStyle: "italic",
+									lineHeight: 1.4,
+								}}
+							>
+								&ldquo;{quote.text}&rdquo;
+							</span>
+							<span
+								style={{
+									fontSize: "11px",
+									color: C.white,
+									fontWeight: 700,
+									marginTop: "4px",
+								}}
+							>
+								— {quote.author}
+							</span>
+						</div>
 					</div>
 				</div>
 			</div>

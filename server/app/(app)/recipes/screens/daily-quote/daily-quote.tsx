@@ -56,6 +56,41 @@ function QuoteMark({ color }: { color: string }) {
 	);
 }
 
+/* ── Dynamic defaults ──────────────────────────────────────────────── */
+function getDefaultDate() {
+	return new Date()
+		.toLocaleDateString("en-US", {
+			weekday: "long",
+			month: "long",
+			day: "numeric",
+			year: "numeric",
+		})
+		.toUpperCase();
+}
+
+function getDefaultDayNumber() {
+	const now = new Date();
+	const start = new Date(now.getFullYear(), 0, 0);
+	const diff = now.getTime() - start.getTime();
+	return Math.floor(diff / (1000 * 60 * 60 * 24));
+}
+
+const QUOTES = [
+	{ text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb", category: "Wisdom" },
+	{ text: "Simplicity is the ultimate sophistication.", author: "Leonardo da Vinci", category: "Design" },
+	{ text: "The only way to do great work is to love what you do.", author: "Steve Jobs", category: "Work" },
+	{ text: "In the middle of difficulty lies opportunity.", author: "Albert Einstein", category: "Resilience" },
+	{ text: "What you do today can improve all your tomorrows.", author: "Ralph Marston", category: "Motivation" },
+	{ text: "It is not the mountain we conquer, but ourselves.", author: "Edmund Hillary", category: "Growth" },
+	{ text: "The journey of a thousand miles begins with a single step.", author: "Lao Tzu", category: "Wisdom" },
+	{ text: "Be yourself; everyone else is already taken.", author: "Oscar Wilde", category: "Identity" },
+];
+
+function getDefaultQuote() {
+	const dayNumber = getDefaultDayNumber();
+	return QUOTES[dayNumber % QUOTES.length];
+}
+
 /* ── Prop types ─────────────────────────────────────────────────────── */
 interface DailyQuoteProps {
 	text?: string;
@@ -69,11 +104,11 @@ interface DailyQuoteProps {
 
 /* ── Main Component ─────────────────────────────────────────────────── */
 export default function DailyQuote({
-	text = "The best time to plant a tree was 20 years ago. The second best time is now.",
-	author = "Chinese Proverb",
-	category = "Wisdom",
-	date = "FRIDAY, FEBRUARY 6, 2026",
-	dayNumber = 37,
+	text = getDefaultQuote().text,
+	author = getDefaultQuote().author,
+	category = getDefaultQuote().category,
+	date = getDefaultDate(),
+	dayNumber = getDefaultDayNumber(),
 	width = 800,
 	height = 480,
 }: DailyQuoteProps) {

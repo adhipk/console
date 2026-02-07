@@ -109,83 +109,89 @@ function Checkbox({ done }: { done: boolean }) {
 	);
 }
 
+/* ── Dynamic defaults ──────────────────────────────────────────────── */
+function getDefaultDate() {
+	return new Date()
+		.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })
+		.toUpperCase();
+}
+
+function getDefaultDayOfWeek() {
+	return new Date()
+		.toLocaleDateString("en-US", { weekday: "long" })
+		.toUpperCase();
+}
+
+function getDefaultDaysUntilWeekend() {
+	const dayIndex = new Date().getDay(); // 0=Sun, 6=Sat
+	return dayIndex === 0 || dayIndex === 6 ? 0 : 6 - dayIndex;
+}
+
+function getDefaultSections(): AgendaSection[] {
+	const now = new Date();
+	const hour = now.getHours();
+
+	const morning: AgendaEvent[] = [
+		{ time: "8:30 AM", title: "Morning coffee & review", duration: "30m", category: "personal" },
+		{ time: "9:00 AM", title: "Team standup", duration: "15m", category: "work" },
+		{ time: "10:00 AM", title: "Deep work block", duration: "2h", category: "work" },
+	];
+	const afternoon: AgendaEvent[] = [
+		{ time: "12:30 PM", title: "Lunch break", duration: "1h", category: "social" },
+		{ time: "2:00 PM", title: "Project review", duration: "1h", category: "work" },
+		{ time: "3:30 PM", title: "Gym session", duration: "1h", category: "health" },
+	];
+	const evening: AgendaEvent[] = [
+		{ time: "6:00 PM", title: "Dinner prep", duration: "45m", category: "personal" },
+		{ time: "8:00 PM", title: "Read / wind down", duration: "1h", category: "personal" },
+	];
+
+	const dayOfWeek = now.getDay();
+	// Vary events slightly based on day of week
+	if (dayOfWeek === 1) morning[2] = { time: "10:00 AM", title: "Sprint planning", duration: "1h", category: "work" };
+	if (dayOfWeek === 3) afternoon[1] = { time: "2:00 PM", title: "1:1 with manager", duration: "30m", category: "work" };
+	if (dayOfWeek === 5) afternoon[2] = { time: "3:30 PM", title: "Team retro", duration: "1h", category: "work" };
+	if (dayOfWeek === 0 || dayOfWeek === 6) {
+		morning.splice(1, 2, { time: "10:00 AM", title: "Weekend errands", duration: "2h", category: "personal" });
+		afternoon.splice(0, 3,
+			{ time: "1:00 PM", title: "Lunch out", duration: "1h", category: "social" },
+			{ time: "3:00 PM", title: "Outdoor walk", duration: "1h", category: "health" },
+		);
+	}
+
+	return [
+		{ label: "MORNING", events: morning },
+		{ label: "AFTERNOON", events: afternoon },
+		{ label: "EVENING", events: evening },
+	];
+}
+
+function getDefaultTasks(): Task[] {
+	const dayOfWeek = new Date().getDay();
+	const weekdayTasks: Task[] = [
+		{ title: "Review pull requests", done: false, priority: "high" },
+		{ title: "Reply to emails", done: false, priority: "high" },
+		{ title: "Update project docs", done: false, priority: "medium" },
+		{ title: "Grocery shopping", done: false, priority: "low" },
+		{ title: "Schedule appointments", done: false, priority: "low" },
+	];
+	const weekendTasks: Task[] = [
+		{ title: "Meal prep for the week", done: false, priority: "high" },
+		{ title: "Clean the house", done: false, priority: "medium" },
+		{ title: "Call family", done: false, priority: "medium" },
+		{ title: "Read a book chapter", done: false, priority: "low" },
+		{ title: "Plan next week", done: false, priority: "low" },
+	];
+	return dayOfWeek === 0 || dayOfWeek === 6 ? weekendTasks : weekdayTasks;
+}
+
 /* ── Main Component ─────────────────────────────────────────────────── */
 export default function DailyAgenda({
-	date = "FEBRUARY 6, 2026",
-	dayOfWeek = "FRIDAY",
-	daysUntilWeekend = 1,
-	sections = [
-		{
-			label: "MORNING",
-			events: [
-				{
-					time: "8:30 AM",
-					title: "Morning coffee & review",
-					duration: "30m",
-					category: "personal" as const,
-				},
-				{
-					time: "9:00 AM",
-					title: "Team standup",
-					duration: "15m",
-					category: "work" as const,
-				},
-				{
-					time: "10:00 AM",
-					title: "Deep work block",
-					duration: "2h",
-					category: "work" as const,
-				},
-			],
-		},
-		{
-			label: "AFTERNOON",
-			events: [
-				{
-					time: "12:30 PM",
-					title: "Lunch with Alex",
-					duration: "1h",
-					category: "social" as const,
-				},
-				{
-					time: "2:00 PM",
-					title: "Design review",
-					duration: "1h",
-					category: "work" as const,
-				},
-				{
-					time: "3:30 PM",
-					title: "Gym session",
-					duration: "1h",
-					category: "health" as const,
-				},
-			],
-		},
-		{
-			label: "EVENING",
-			events: [
-				{
-					time: "6:00 PM",
-					title: "Dinner prep",
-					duration: "45m",
-					category: "personal" as const,
-				},
-				{
-					time: "8:00 PM",
-					title: "Read / wind down",
-					duration: "1h",
-					category: "personal" as const,
-				},
-			],
-		},
-	],
-	tasks = [
-		{ title: "Ship feature PR", done: false, priority: "high" as const },
-		{ title: "Reply to client email", done: false, priority: "high" as const },
-		{ title: "Update project docs", done: true, priority: "medium" as const },
-		{ title: "Grocery shopping", done: false, priority: "low" as const },
-		{ title: "Schedule dentist appt", done: true, priority: "low" as const },
-	],
+	date = getDefaultDate(),
+	dayOfWeek = getDefaultDayOfWeek(),
+	daysUntilWeekend = getDefaultDaysUntilWeekend(),
+	sections = getDefaultSections(),
+	tasks = getDefaultTasks(),
 	width = 800,
 	height = 480,
 }: DailyAgendaProps) {

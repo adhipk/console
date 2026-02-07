@@ -333,6 +333,42 @@
 		"version": "1.0.0",
 		"category": "color-eink"
 	},
+	"color-cooking": {
+		"title": "Color Cooking",
+		"published": true,
+		"createdAt": "2026-02-07T00:00:00Z",
+		"updatedAt": "2026-02-07T00:00:00Z",
+		"description": "Daily cooking recipe with dish name, ingredients, instructions, and a QR code linking to the full recipe. Fetches from TheMealDB API with optional cuisine filtering.",
+		"componentPath": "./screens/color-cooking",
+		"hasDataFetch": true,
+		"props": {},
+		"params": {
+			"cuisine": {
+				"type": "string",
+				"label": "Cuisine",
+				"description": "Filter by cuisine/area (e.g., 'Italian', 'Indian', 'Japanese'). Leave empty for a random dish.",
+				"default": "",
+				"placeholder": "Italian"
+			}
+		},
+		"tags": [
+			"color",
+			"e-ink",
+			"cooking",
+			"recipe",
+			"food",
+			"qr-code",
+			"live-data",
+			"configurable"
+		],
+		"author": {
+			"name": "Console",
+			"github": ""
+		},
+		"renderSettings": {},
+		"version": "1.0.0",
+		"category": "color-eink"
+	},
 	"color-air-quality": {
 		"title": "Color Air Quality",
 		"published": true,
