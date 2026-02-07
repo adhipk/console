@@ -1,0 +1,13 @@
+{
+	"name": "console",
+	"private": true,
+	"scripts": {
+		"dev": "pnpm --dir server dev",
+		"build": "pnpm --dir server build",
+		"start": "pnpm --dir server start",
+		"lint": "pnpm --dir server lint",
+		"lint:fix": "pnpm --dir server lint:fix",
+		"format": "pnpm --dir server format",
+		"install:server": "pnpm --dir server install"
+	}
+}
