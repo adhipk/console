@@ -54,49 +54,143 @@ function getAgendaForDay(): AgendaSection[] {
 			{
 				label: "MORNING",
 				events: [
-					{ time: "9:00 AM", title: "Sleep in & breakfast", duration: "1h", category: "personal" },
-					{ time: "10:30 AM", title: "Weekend errands", duration: "1.5h", category: "personal" },
+					{
+						time: "9:00 AM",
+						title: "Sleep in & breakfast",
+						duration: "1h",
+						category: "personal",
+					},
+					{
+						time: "10:30 AM",
+						title: "Weekend errands",
+						duration: "1.5h",
+						category: "personal",
+					},
 				],
 			},
 			{
 				label: "AFTERNOON",
 				events: [
-					{ time: "1:00 PM", title: "Lunch out", duration: "1h", category: "social" },
-					{ time: "3:00 PM", title: "Outdoor walk", duration: "1h", category: "health" },
+					{
+						time: "1:00 PM",
+						title: "Lunch out",
+						duration: "1h",
+						category: "social",
+					},
+					{
+						time: "3:00 PM",
+						title: "Outdoor walk",
+						duration: "1h",
+						category: "health",
+					},
 				],
 			},
 			{
 				label: "EVENING",
 				events: [
-					{ time: "6:00 PM", title: "Cook dinner", duration: "1h", category: "personal" },
-					{ time: "8:00 PM", title: "Movie night", duration: "2h", category: "personal" },
+					{
+						time: "6:00 PM",
+						title: "Cook dinner",
+						duration: "1h",
+						category: "personal",
+					},
+					{
+						time: "8:00 PM",
+						title: "Movie night",
+						duration: "2h",
+						category: "personal",
+					},
 				],
 			},
 		];
 	}
 
 	const morning: AgendaEvent[] = [
-		{ time: "8:30 AM", title: "Morning coffee & review", duration: "30m", category: "personal" },
-		{ time: "9:00 AM", title: "Team standup", duration: "15m", category: "work" },
-		{ time: "10:00 AM", title: "Deep work block", duration: "2h", category: "work" },
+		{
+			time: "8:30 AM",
+			title: "Morning coffee & review",
+			duration: "30m",
+			category: "personal",
+		},
+		{
+			time: "9:00 AM",
+			title: "Team standup",
+			duration: "15m",
+			category: "work",
+		},
+		{
+			time: "10:00 AM",
+			title: "Deep work block",
+			duration: "2h",
+			category: "work",
+		},
 	];
 
 	// Vary based on day of week
-	if (dayOfWeek === 1) morning[2] = { time: "10:00 AM", title: "Sprint planning", duration: "1h", category: "work" };
-	if (dayOfWeek === 3) morning[2] = { time: "10:00 AM", title: "Architecture review", duration: "1.5h", category: "work" };
+	if (dayOfWeek === 1)
+		morning[2] = {
+			time: "10:00 AM",
+			title: "Sprint planning",
+			duration: "1h",
+			category: "work",
+		};
+	if (dayOfWeek === 3)
+		morning[2] = {
+			time: "10:00 AM",
+			title: "Architecture review",
+			duration: "1.5h",
+			category: "work",
+		};
 
 	const afternoon: AgendaEvent[] = [
-		{ time: "12:30 PM", title: "Lunch break", duration: "1h", category: "social" },
-		{ time: "2:00 PM", title: "Project review", duration: "1h", category: "work" },
-		{ time: "3:30 PM", title: "Gym session", duration: "1h", category: "health" },
+		{
+			time: "12:30 PM",
+			title: "Lunch break",
+			duration: "1h",
+			category: "social",
+		},
+		{
+			time: "2:00 PM",
+			title: "Project review",
+			duration: "1h",
+			category: "work",
+		},
+		{
+			time: "3:30 PM",
+			title: "Gym session",
+			duration: "1h",
+			category: "health",
+		},
 	];
 
-	if (dayOfWeek === 2) afternoon[1] = { time: "2:00 PM", title: "1:1 with manager", duration: "30m", category: "work" };
-	if (dayOfWeek === 5) afternoon[2] = { time: "3:30 PM", title: "Team retro", duration: "1h", category: "work" };
+	if (dayOfWeek === 2)
+		afternoon[1] = {
+			time: "2:00 PM",
+			title: "1:1 with manager",
+			duration: "30m",
+			category: "work",
+		};
+	if (dayOfWeek === 5)
+		afternoon[2] = {
+			time: "3:30 PM",
+			title: "Team retro",
+			duration: "1h",
+			category: "work",
+		};
 
 	const evening: AgendaEvent[] = [
-		{ time: "6:00 PM", title: "Dinner prep", duration: "45m", category: "personal" },
-		{ time: "8:00 PM", title: "Read / wind down", duration: "1h", category: "personal" },
+		{
+			time: "6:00 PM",
+			title: "Dinner prep",
+			duration: "45m",
+			category: "personal",
+		},
+		{
+			time: "8:00 PM",
+			title: "Read / wind down",
+			duration: "1h",
+			category: "personal",
+		},
 	];
 
 	return [

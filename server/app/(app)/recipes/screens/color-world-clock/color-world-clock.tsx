@@ -179,12 +179,42 @@ interface CityDef {
 }
 
 const DEFAULT_CITY_DEFS: CityDef[] = [
-	{ city: "San Francisco", country: "USA", offset: -8, sunriseHour: 7, sunsetHour: 17 },
-	{ city: "New York", country: "USA", offset: -5, sunriseHour: 7, sunsetHour: 17 },
+	{
+		city: "San Francisco",
+		country: "USA",
+		offset: -8,
+		sunriseHour: 7,
+		sunsetHour: 17,
+	},
+	{
+		city: "New York",
+		country: "USA",
+		offset: -5,
+		sunriseHour: 7,
+		sunsetHour: 17,
+	},
 	{ city: "London", country: "UK", offset: 0, sunriseHour: 7, sunsetHour: 17 },
-	{ city: "Berlin", country: "Germany", offset: 1, sunriseHour: 7, sunsetHour: 17 },
-	{ city: "Tokyo", country: "Japan", offset: 9, sunriseHour: 6, sunsetHour: 17 },
-	{ city: "Sydney", country: "Australia", offset: 11, sunriseHour: 6, sunsetHour: 20 },
+	{
+		city: "Berlin",
+		country: "Germany",
+		offset: 1,
+		sunriseHour: 7,
+		sunsetHour: 17,
+	},
+	{
+		city: "Tokyo",
+		country: "Japan",
+		offset: 9,
+		sunriseHour: 6,
+		sunsetHour: 17,
+	},
+	{
+		city: "Sydney",
+		country: "Australia",
+		offset: 11,
+		sunriseHour: 6,
+		sunsetHour: 20,
+	},
 ];
 
 function computeCityTime(def: CityDef, now: Date): CityTime {
@@ -197,8 +227,16 @@ function computeCityTime(def: CityDef, now: Date): CityTime {
 	return {
 		city: def.city,
 		country: def.country,
-		time: localDate.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }),
-		date: localDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }),
+		time: localDate.toLocaleTimeString("en-US", {
+			hour: "numeric",
+			minute: "2-digit",
+			hour12: true,
+		}),
+		date: localDate.toLocaleDateString("en-US", {
+			weekday: "short",
+			month: "short",
+			day: "numeric",
+		}),
 		utcOffset: def.offset >= 0 ? `UTC+${def.offset}` : `UTC${def.offset}`,
 		isDay,
 		hour,
@@ -248,7 +286,9 @@ export default function ColorWorldClock({
 						color: C.white,
 					}}
 				>
-					<span style={{ fontSize: "18px", fontWeight: 700, letterSpacing: "2px" }}>
+					<span
+						style={{ fontSize: "18px", fontWeight: 700, letterSpacing: "2px" }}
+					>
 						WORLD CLOCK
 					</span>
 					<span style={{ fontSize: "14px", fontWeight: 500, color: C.yellow }}>

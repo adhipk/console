@@ -250,31 +250,36 @@ function getEventsForDay(): CalendarEvent[] {
 
 	const weekdayEvents: CalendarEvent[][] = [
 		[], // Sunday (handled above)
-		[ // Monday
+		[
+			// Monday
 			{ time: "9:00 AM", title: "Team standup", color: "blue" },
 			{ time: "10:00 AM", title: "Sprint planning", color: "red" },
 			{ time: "1:00 PM", title: "Lunch break", color: "orange" },
 			{ time: "3:00 PM", title: "Deep work block", color: "green" },
 		],
-		[ // Tuesday
+		[
+			// Tuesday
 			{ time: "9:00 AM", title: "Team standup", color: "blue" },
 			{ time: "11:00 AM", title: "Design review", color: "green" },
 			{ time: "1:00 PM", title: "Lunch break", color: "orange" },
 			{ time: "3:30 PM", title: "Code review", color: "blue" },
 		],
-		[ // Wednesday
+		[
+			// Wednesday
 			{ time: "9:00 AM", title: "Team standup", color: "blue" },
 			{ time: "10:30 AM", title: "1:1 with manager", color: "red" },
 			{ time: "1:00 PM", title: "Lunch break", color: "orange" },
 			{ time: "2:30 PM", title: "Project sync", color: "green" },
 		],
-		[ // Thursday
+		[
+			// Thursday
 			{ time: "9:00 AM", title: "Team standup", color: "blue" },
 			{ time: "11:00 AM", title: "Architecture review", color: "green" },
 			{ time: "1:00 PM", title: "Lunch break", color: "orange" },
 			{ time: "3:00 PM", title: "Demo prep", color: "red" },
 		],
-		[ // Friday
+		[
+			// Friday
 			{ time: "9:00 AM", title: "Team standup", color: "blue" },
 			{ time: "11:00 AM", title: "Team retro", color: "green" },
 			{ time: "1:00 PM", title: "Lunch break", color: "orange" },

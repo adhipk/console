@@ -95,9 +95,18 @@ export async function GET(request: Request) {
 
 		// Calculate refresh rate from schedule or use default
 		const refreshSchedule = deviceData.refresh_schedule as {
-			default_refresh_rate: number;
+			default_refresh_rate: number | string;
 		} | null;
-		const refreshRate = refreshSchedule?.default_refresh_rate || 180;
+		const refreshRateRaw = refreshSchedule?.default_refresh_rate;
+		const refreshRateNumber =
+			typeof refreshRateRaw === "number"
+				? refreshRateRaw
+				: typeof refreshRateRaw === "string"
+					? Number.parseInt(refreshRateRaw, 10)
+					: Number.NaN;
+		const refreshRate = Number.isFinite(refreshRateNumber)
+			? Math.trunc(refreshRateNumber)
+			: 180;
 
 		logInfo("Current display request successful", {
 			source: "api/display/current",

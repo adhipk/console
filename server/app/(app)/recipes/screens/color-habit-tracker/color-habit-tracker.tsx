@@ -12,7 +12,11 @@ const C = {
 } as const;
 
 /* ── Status cell icons ─────────────────────────────────────────────── */
-function StatusCell({ status }: { status: "done" | "missed" | "partial" | "rest" | "future" }) {
+function StatusCell({
+	status,
+}: {
+	status: "done" | "missed" | "partial" | "rest" | "future";
+}) {
 	const size = 28;
 	const half = size / 2;
 
@@ -26,7 +30,14 @@ function StatusCell({ status }: { status: "done" | "missed" | "partial" | "rest"
 				width={size}
 				height={size}
 			>
-				<rect x="2" y="2" width={size - 4} height={size - 4} rx="4" fill={C.green} />
+				<rect
+					x="2"
+					y="2"
+					width={size - 4}
+					height={size - 4}
+					rx="4"
+					fill={C.green}
+				/>
 				<path
 					d="M8 14l4 4 8-8"
 					stroke={C.white}
@@ -48,9 +59,32 @@ function StatusCell({ status }: { status: "done" | "missed" | "partial" | "rest"
 				width={size}
 				height={size}
 			>
-				<rect x="2" y="2" width={size - 4} height={size - 4} rx="4" fill={C.red} />
-				<line x1="9" y1="9" x2="19" y2="19" stroke={C.white} strokeWidth="2.5" strokeLinecap="round" />
-				<line x1="19" y1="9" x2="9" y2="19" stroke={C.white} strokeWidth="2.5" strokeLinecap="round" />
+				<rect
+					x="2"
+					y="2"
+					width={size - 4}
+					height={size - 4}
+					rx="4"
+					fill={C.red}
+				/>
+				<line
+					x1="9"
+					y1="9"
+					x2="19"
+					y2="19"
+					stroke={C.white}
+					strokeWidth="2.5"
+					strokeLinecap="round"
+				/>
+				<line
+					x1="19"
+					y1="9"
+					x2="9"
+					y2="19"
+					stroke={C.white}
+					strokeWidth="2.5"
+					strokeLinecap="round"
+				/>
 			</svg>
 		);
 	}
@@ -64,7 +98,14 @@ function StatusCell({ status }: { status: "done" | "missed" | "partial" | "rest"
 				width={size}
 				height={size}
 			>
-				<rect x="2" y="2" width={size - 4} height={size - 4} rx="4" fill={C.yellow} />
+				<rect
+					x="2"
+					y="2"
+					width={size - 4}
+					height={size - 4}
+					rx="4"
+					fill={C.yellow}
+				/>
 				<circle cx={half} cy={half} r="4" fill={C.black} />
 			</svg>
 		);
@@ -79,8 +120,25 @@ function StatusCell({ status }: { status: "done" | "missed" | "partial" | "rest"
 				width={size}
 				height={size}
 			>
-				<rect x="2" y="2" width={size - 4} height={size - 4} rx="4" fill="#F0F0F0" stroke="#D0D0D0" strokeWidth="1" />
-				<line x1="8" y1={half} x2="20" y2={half} stroke="#D0D0D0" strokeWidth="1.5" strokeLinecap="round" />
+				<rect
+					x="2"
+					y="2"
+					width={size - 4}
+					height={size - 4}
+					rx="4"
+					fill="#F0F0F0"
+					stroke="#D0D0D0"
+					strokeWidth="1"
+				/>
+				<line
+					x1="8"
+					y1={half}
+					x2="20"
+					y2={half}
+					stroke="#D0D0D0"
+					strokeWidth="1.5"
+					strokeLinecap="round"
+				/>
 			</svg>
 		);
 	}
@@ -94,7 +152,16 @@ function StatusCell({ status }: { status: "done" | "missed" | "partial" | "rest"
 			width={size}
 			height={size}
 		>
-			<rect x="2" y="2" width={size - 4} height={size - 4} rx="4" fill="none" stroke="#D0D0D0" strokeWidth="1.5" />
+			<rect
+				x="2"
+				y="2"
+				width={size - 4}
+				height={size - 4}
+				rx="4"
+				fill="none"
+				stroke="#D0D0D0"
+				strokeWidth="1.5"
+			/>
 		</svg>
 	);
 }
@@ -156,7 +223,9 @@ function getDefaultWeekLabel() {
 	const sunday = new Date(monday);
 	sunday.setDate(monday.getDate() + 6);
 	const fmt = (d: Date) =>
-		d.toLocaleDateString("en-US", { month: "short", day: "numeric" }).toUpperCase();
+		d
+			.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+			.toUpperCase();
 	return `${fmt(monday)} – ${fmt(sunday)}, ${now.getFullYear()}`;
 }
 
@@ -169,17 +238,55 @@ function getDefaultHabits(): Habit[] {
 	const todayIdx = getDefaultTodayIndex();
 
 	const habitDefs = [
-		{ name: "Exercise", emoji: "💪", color: C.red, restDays: [6] as number[], difficulty: 0.75 },
-		{ name: "Reading", emoji: "📖", color: C.blue, restDays: [] as number[], difficulty: 0.85 },
-		{ name: "Meditate", emoji: "🧘", color: C.green, restDays: [] as number[], difficulty: 0.7 },
-		{ name: "Water 8 cups", emoji: "💧", color: C.blue, restDays: [] as number[], difficulty: 0.8 },
-		{ name: "No sugar", emoji: "🍬", color: C.orange, restDays: [] as number[], difficulty: 0.65 },
-		{ name: "Sleep by 11", emoji: "😴", color: C.green, restDays: [4, 5] as number[], difficulty: 0.8 },
+		{
+			name: "Exercise",
+			emoji: "💪",
+			color: C.red,
+			restDays: [6] as number[],
+			difficulty: 0.75,
+		},
+		{
+			name: "Reading",
+			emoji: "📖",
+			color: C.blue,
+			restDays: [] as number[],
+			difficulty: 0.85,
+		},
+		{
+			name: "Meditate",
+			emoji: "🧘",
+			color: C.green,
+			restDays: [] as number[],
+			difficulty: 0.7,
+		},
+		{
+			name: "Water 8 cups",
+			emoji: "💧",
+			color: C.blue,
+			restDays: [] as number[],
+			difficulty: 0.8,
+		},
+		{
+			name: "No sugar",
+			emoji: "🍬",
+			color: C.orange,
+			restDays: [] as number[],
+			difficulty: 0.65,
+		},
+		{
+			name: "Sleep by 11",
+			emoji: "😴",
+			color: C.green,
+			restDays: [4, 5] as number[],
+			difficulty: 0.8,
+		},
 	];
 
 	const now = new Date();
 	const start = new Date(now.getFullYear(), 0, 0);
-	const dayOfYear = Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+	const dayOfYear = Math.floor(
+		(now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24),
+	);
 
 	const pseudoRandom = (seed: number): number => {
 		const x = Math.sin(seed * 127.1 + 311.7) * 43758.5453;
@@ -187,7 +294,15 @@ function getDefaultHabits(): Habit[] {
 	};
 
 	return habitDefs.map((def, habitIdx) => {
-		const days: HabitStatus[] = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"].map((_, dayIdx) => {
+		const days: HabitStatus[] = [
+			"MON",
+			"TUE",
+			"WED",
+			"THU",
+			"FRI",
+			"SAT",
+			"SUN",
+		].map((_, dayIdx) => {
 			if (dayIdx > todayIdx) return "future";
 			if (def.restDays.includes(dayIdx)) return "rest";
 			const rand = pseudoRandom(dayOfYear * 100 + habitIdx * 10 + dayIdx);
@@ -225,7 +340,8 @@ export default function ColorHabitTracker({
 		0,
 	);
 	const totalPast = habits.reduce(
-		(sum, h) => sum + h.days.filter((d) => d !== "future" && d !== "rest").length,
+		(sum, h) =>
+			sum + h.days.filter((d) => d !== "future" && d !== "rest").length,
 		0,
 	);
 	const rate = totalPast > 0 ? Math.round((doneCount / totalPast) * 100) : 0;
@@ -255,10 +371,18 @@ export default function ColorHabitTracker({
 					}}
 				>
 					<div style={{ display: "flex", flexDirection: "column" }}>
-						<span style={{ fontSize: "18px", fontWeight: 700, letterSpacing: "1px" }}>
+						<span
+							style={{
+								fontSize: "18px",
+								fontWeight: 700,
+								letterSpacing: "1px",
+							}}
+						>
 							HABIT TRACKER
 						</span>
-						<span style={{ fontSize: "12px", fontWeight: 400 }}>{weekLabel}</span>
+						<span style={{ fontSize: "12px", fontWeight: 400 }}>
+							{weekLabel}
+						</span>
 					</div>
 					<div
 						style={{
@@ -270,7 +394,9 @@ export default function ColorHabitTracker({
 						<span style={{ fontSize: "28px", fontWeight: 700, lineHeight: 1 }}>
 							{rate}%
 						</span>
-						<span style={{ fontSize: "10px", fontWeight: 400 }}>completion</span>
+						<span style={{ fontSize: "10px", fontWeight: 400 }}>
+							completion
+						</span>
 					</div>
 				</div>
 
@@ -458,7 +584,9 @@ export default function ColorHabitTracker({
 									marginRight: "5px",
 								}}
 							/>
-							<span style={{ fontSize: "10px", color: C.black, fontWeight: 500 }}>
+							<span
+								style={{ fontSize: "10px", color: C.black, fontWeight: 500 }}
+							>
 								{label}
 							</span>
 						</div>

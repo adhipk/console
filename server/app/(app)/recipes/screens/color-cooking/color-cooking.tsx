@@ -81,7 +81,13 @@ function ChefHatIcon({ size = 28 }: { size?: number }) {
 	);
 }
 
-function ForkKnifeIcon({ size = 20, color = C.black }: { size?: number; color?: string }) {
+function ForkKnifeIcon({
+	size = 20,
+	color = C.black,
+}: {
+	size?: number;
+	color?: string;
+}) {
 	return (
 		<svg
 			role="img"
@@ -108,7 +114,13 @@ function ForkKnifeIcon({ size = 20, color = C.black }: { size?: number; color?: 
 	);
 }
 
-function SteamIcon({ size = 20, color = C.orange }: { size?: number; color?: string }) {
+function SteamIcon({
+	size = 20,
+	color = C.orange,
+}: {
+	size?: number;
+	color?: string;
+}) {
 	return (
 		<svg
 			role="img"
@@ -625,12 +637,7 @@ export default function ColorCooking({
 										backgroundColor: C.white,
 									}}
 								>
-									<img
-										src={qrCodeUrl}
-										alt="QR Code"
-										width={90}
-										height={90}
-									/>
+									<img src={qrCodeUrl} alt="QR Code" width={90} height={90} />
 								</div>
 							) : (
 								<div

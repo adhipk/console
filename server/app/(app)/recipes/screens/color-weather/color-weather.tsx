@@ -93,9 +93,33 @@ function ConditionIcon({ code, size = 96 }: { code: number; size?: number }) {
 					stroke={col}
 					strokeWidth="2.5"
 				/>
-				<line x1="22" y1="44" x2="19" y2="52" stroke={col} strokeWidth="2.5" strokeLinecap="round" />
-				<line x1="32" y1="44" x2="29" y2="52" stroke={col} strokeWidth="2.5" strokeLinecap="round" />
-				<line x1="42" y1="44" x2="39" y2="52" stroke={col} strokeWidth="2.5" strokeLinecap="round" />
+				<line
+					x1="22"
+					y1="44"
+					x2="19"
+					y2="52"
+					stroke={col}
+					strokeWidth="2.5"
+					strokeLinecap="round"
+				/>
+				<line
+					x1="32"
+					y1="44"
+					x2="29"
+					y2="52"
+					stroke={col}
+					strokeWidth="2.5"
+					strokeLinecap="round"
+				/>
+				<line
+					x1="42"
+					y1="44"
+					x2="39"
+					y2="52"
+					stroke={col}
+					strokeWidth="2.5"
+					strokeLinecap="round"
+				/>
 			</svg>
 		);
 	}
@@ -179,11 +203,50 @@ function ForecastIcon({ code, size = 26 }: { code: number; size?: number }) {
 				height={size}
 				fill="none"
 			>
-				<circle cx="12" cy="12" r="4" fill={C.yellow} stroke={C.orange} strokeWidth="1.5" />
-				<line x1="12" y1="2" x2="12" y2="5" stroke={C.orange} strokeWidth="1.5" strokeLinecap="round" />
-				<line x1="12" y1="19" x2="12" y2="22" stroke={C.orange} strokeWidth="1.5" strokeLinecap="round" />
-				<line x1="2" y1="12" x2="5" y2="12" stroke={C.orange} strokeWidth="1.5" strokeLinecap="round" />
-				<line x1="19" y1="12" x2="22" y2="12" stroke={C.orange} strokeWidth="1.5" strokeLinecap="round" />
+				<circle
+					cx="12"
+					cy="12"
+					r="4"
+					fill={C.yellow}
+					stroke={C.orange}
+					strokeWidth="1.5"
+				/>
+				<line
+					x1="12"
+					y1="2"
+					x2="12"
+					y2="5"
+					stroke={C.orange}
+					strokeWidth="1.5"
+					strokeLinecap="round"
+				/>
+				<line
+					x1="12"
+					y1="19"
+					x2="12"
+					y2="22"
+					stroke={C.orange}
+					strokeWidth="1.5"
+					strokeLinecap="round"
+				/>
+				<line
+					x1="2"
+					y1="12"
+					x2="5"
+					y2="12"
+					stroke={C.orange}
+					strokeWidth="1.5"
+					strokeLinecap="round"
+				/>
+				<line
+					x1="19"
+					y1="12"
+					x2="22"
+					y2="12"
+					stroke={C.orange}
+					strokeWidth="1.5"
+					strokeLinecap="round"
+				/>
 			</svg>
 		);
 	}
@@ -223,8 +286,24 @@ function ForecastIcon({ code, size = 26 }: { code: number; size?: number }) {
 					stroke={C.black}
 					strokeWidth="1.5"
 				/>
-				<line x1="9" y1="19" x2="9" y2="22" stroke={C.blue} strokeWidth="2" strokeLinecap="round" />
-				<line x1="15" y1="19" x2="15" y2="22" stroke={C.blue} strokeWidth="2" strokeLinecap="round" />
+				<line
+					x1="9"
+					y1="19"
+					x2="9"
+					y2="22"
+					stroke={C.blue}
+					strokeWidth="2"
+					strokeLinecap="round"
+				/>
+				<line
+					x1="15"
+					y1="19"
+					x2="15"
+					y2="22"
+					stroke={C.blue}
+					strokeWidth="2"
+					strokeLinecap="round"
+				/>
 			</svg>
 		);
 	}
@@ -630,7 +709,9 @@ export default function ColorWeather({
 									marginRight: "6px",
 								}}
 							/>
-							<span style={{ fontSize: "16px", fontWeight: 700, color: C.blue }}>
+							<span
+								style={{ fontSize: "16px", fontWeight: 700, color: C.blue }}
+							>
 								{lowTemp}°
 							</span>
 							<span
@@ -655,8 +736,18 @@ export default function ColorWeather({
 						>
 							{[
 								{ label: "HUMIDITY", value: `${humidity}%`, color: C.blue },
-								{ label: "WIND", value: `${windSpeed}`, unit: "km/h", color: C.black },
-								{ label: "PRESSURE", value: pressure, unit: "hPa", color: C.black },
+								{
+									label: "WIND",
+									value: `${windSpeed}`,
+									unit: "km/h",
+									color: C.black,
+								},
+								{
+									label: "PRESSURE",
+									value: pressure,
+									unit: "hPa",
+									color: C.black,
+								},
 							].map((stat) => (
 								<div
 									key={stat.label}
@@ -778,9 +869,7 @@ export default function ColorWeather({
 								flexDirection: "column",
 								flex: 1,
 								borderRight:
-									i < forecast.length - 1
-										? `1px solid #D0D0D0`
-										: "none",
+									i < forecast.length - 1 ? `1px solid #D0D0D0` : "none",
 							}}
 						>
 							{/* Colored top edge */}

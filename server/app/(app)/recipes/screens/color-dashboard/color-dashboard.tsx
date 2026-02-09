@@ -75,9 +75,33 @@ function WeatherIcon({ code, size = 48 }: { code: number; size?: number }) {
 					stroke={C.black}
 					strokeWidth="1.5"
 				/>
-				<line x1="8" y1="19" x2="8" y2="22" stroke={C.blue} strokeWidth="2" strokeLinecap="round" />
-				<line x1="12" y1="19" x2="12" y2="22" stroke={C.blue} strokeWidth="2" strokeLinecap="round" />
-				<line x1="16" y1="19" x2="16" y2="22" stroke={C.blue} strokeWidth="2" strokeLinecap="round" />
+				<line
+					x1="8"
+					y1="19"
+					x2="8"
+					y2="22"
+					stroke={C.blue}
+					strokeWidth="2"
+					strokeLinecap="round"
+				/>
+				<line
+					x1="12"
+					y1="19"
+					x2="12"
+					y2="22"
+					stroke={C.blue}
+					strokeWidth="2"
+					strokeLinecap="round"
+				/>
+				<line
+					x1="16"
+					y1="19"
+					x2="16"
+					y2="22"
+					stroke={C.blue}
+					strokeWidth="2"
+					strokeLinecap="round"
+				/>
 			</svg>
 		);
 	}
@@ -144,7 +168,13 @@ function WeatherIcon({ code, size = 48 }: { code: number; size?: number }) {
 	);
 }
 
-function SmallWeatherIcon({ code, size = 22 }: { code: number; size?: number }) {
+function SmallWeatherIcon({
+	code,
+	size = 22,
+}: {
+	code: number;
+	size?: number;
+}) {
 	return <WeatherIcon code={code} size={size} />;
 }
 
@@ -188,16 +218,29 @@ function getDefaultDateTime() {
 	const now = new Date();
 	return {
 		date: now
-			.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+			.toLocaleDateString("en-US", {
+				month: "short",
+				day: "numeric",
+				year: "numeric",
+			})
 			.toUpperCase(),
-		time: now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }),
+		time: now.toLocaleTimeString("en-US", {
+			hour: "numeric",
+			minute: "2-digit",
+			hour12: true,
+		}),
 		dayOfWeek: now
 			.toLocaleDateString("en-US", { weekday: "long" })
 			.toUpperCase(),
 	};
 }
 
-function getDefaultForecast(): Array<{ day: string; high: string; low: string; code: number }> {
+function getDefaultForecast(): Array<{
+	day: string;
+	high: string;
+	low: string;
+	code: number;
+}> {
 	const now = new Date();
 	return [1, 2, 3].map((offset) => {
 		const d = new Date(now);
@@ -229,19 +272,42 @@ function getDefaultEvents(): CalendarEvent[] {
 }
 
 const DEFAULT_QUOTES = [
-	{ text: "The best time to plant a tree was 20 years ago. The second best time is now.", author: "Chinese Proverb" },
-	{ text: "Simplicity is the ultimate sophistication.", author: "Leonardo da Vinci" },
-	{ text: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
-	{ text: "In the middle of difficulty lies opportunity.", author: "Albert Einstein" },
-	{ text: "What you do today can improve all your tomorrows.", author: "Ralph Marston" },
-	{ text: "The journey of a thousand miles begins with a single step.", author: "Lao Tzu" },
-	{ text: "Be yourself; everyone else is already taken.", author: "Oscar Wilde" },
+	{
+		text: "The best time to plant a tree was 20 years ago. The second best time is now.",
+		author: "Chinese Proverb",
+	},
+	{
+		text: "Simplicity is the ultimate sophistication.",
+		author: "Leonardo da Vinci",
+	},
+	{
+		text: "The only way to do great work is to love what you do.",
+		author: "Steve Jobs",
+	},
+	{
+		text: "In the middle of difficulty lies opportunity.",
+		author: "Albert Einstein",
+	},
+	{
+		text: "What you do today can improve all your tomorrows.",
+		author: "Ralph Marston",
+	},
+	{
+		text: "The journey of a thousand miles begins with a single step.",
+		author: "Lao Tzu",
+	},
+	{
+		text: "Be yourself; everyone else is already taken.",
+		author: "Oscar Wilde",
+	},
 ];
 
 function getDefaultQuote() {
 	const now = new Date();
 	const start = new Date(now.getFullYear(), 0, 0);
-	const dayOfYear = Math.floor((now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+	const dayOfYear = Math.floor(
+		(now.getTime() - start.getTime()) / (1000 * 60 * 60 * 24),
+	);
 	return DEFAULT_QUOTES[dayOfYear % DEFAULT_QUOTES.length];
 }
 
@@ -460,7 +526,9 @@ export default function ColorDashboard({
 									marginTop: "2px",
 								}}
 							>
-								<span style={{ fontSize: "13px", fontWeight: 700, color: C.red }}>
+								<span
+									style={{ fontSize: "13px", fontWeight: 700, color: C.red }}
+								>
 									{weather.highTemp}°
 								</span>
 								<span

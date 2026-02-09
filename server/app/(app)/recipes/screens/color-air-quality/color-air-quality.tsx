@@ -32,21 +32,24 @@ function getAQILevel(aqi: number): AQILevel {
 			label: "Moderate",
 			color: C.yellow,
 			textColor: C.black,
-			advice: "Acceptable quality. Sensitive individuals should limit prolonged outdoor exertion.",
+			advice:
+				"Acceptable quality. Sensitive individuals should limit prolonged outdoor exertion.",
 		};
 	if (aqi <= 150)
 		return {
 			label: "Unhealthy for Sensitive",
 			color: C.orange,
 			textColor: C.white,
-			advice: "Sensitive groups may experience health effects. Consider reducing outdoor activity.",
+			advice:
+				"Sensitive groups may experience health effects. Consider reducing outdoor activity.",
 		};
 	if (aqi <= 200)
 		return {
 			label: "Unhealthy",
 			color: C.red,
 			textColor: C.white,
-			advice: "Everyone may begin to experience health effects. Limit outdoor exertion.",
+			advice:
+				"Everyone may begin to experience health effects. Limit outdoor exertion.",
 		};
 	return {
 		label: "Very Unhealthy",
@@ -296,7 +299,13 @@ export default function ColorAirQuality({
 					}}
 				>
 					<div style={{ display: "flex", flexDirection: "column" }}>
-						<span style={{ fontSize: "18px", fontWeight: 700, letterSpacing: "1px" }}>
+						<span
+							style={{
+								fontSize: "18px",
+								fontWeight: 700,
+								letterSpacing: "1px",
+							}}
+						>
 							AIR QUALITY INDEX
 						</span>
 						<span style={{ fontSize: "12px", fontWeight: 400 }}>

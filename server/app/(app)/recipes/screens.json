@@ -292,13 +292,7 @@
 				"placeholder": "San Francisco, New York, London, Berlin, Tokyo, Sydney"
 			}
 		},
-		"tags": [
-			"color",
-			"e-ink",
-			"world-clock",
-			"time-zones",
-			"configurable"
-		],
+		"tags": ["color", "e-ink", "world-clock", "time-zones", "configurable"],
 		"author": {
 			"name": "Console",
 			"github": ""

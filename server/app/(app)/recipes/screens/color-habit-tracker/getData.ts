@@ -54,12 +54,48 @@ function generateHabitData(): HabitTrackerData {
 	const dayOfYear = Math.floor(diff / (1000 * 60 * 60 * 24));
 
 	const habitDefs = [
-		{ name: "Exercise", emoji: "💪", color: C.red, restDays: [6], difficulty: 0.75 },
-		{ name: "Reading", emoji: "📖", color: C.blue, restDays: [] as number[], difficulty: 0.85 },
-		{ name: "Meditate", emoji: "🧘", color: C.green, restDays: [] as number[], difficulty: 0.7 },
-		{ name: "Water 8 cups", emoji: "💧", color: C.blue, restDays: [] as number[], difficulty: 0.8 },
-		{ name: "No sugar", emoji: "🍬", color: C.orange, restDays: [] as number[], difficulty: 0.65 },
-		{ name: "Sleep by 11", emoji: "😴", color: C.green, restDays: [4, 5] as number[], difficulty: 0.8 },
+		{
+			name: "Exercise",
+			emoji: "💪",
+			color: C.red,
+			restDays: [6],
+			difficulty: 0.75,
+		},
+		{
+			name: "Reading",
+			emoji: "📖",
+			color: C.blue,
+			restDays: [] as number[],
+			difficulty: 0.85,
+		},
+		{
+			name: "Meditate",
+			emoji: "🧘",
+			color: C.green,
+			restDays: [] as number[],
+			difficulty: 0.7,
+		},
+		{
+			name: "Water 8 cups",
+			emoji: "💧",
+			color: C.blue,
+			restDays: [] as number[],
+			difficulty: 0.8,
+		},
+		{
+			name: "No sugar",
+			emoji: "🍬",
+			color: C.orange,
+			restDays: [] as number[],
+			difficulty: 0.65,
+		},
+		{
+			name: "Sleep by 11",
+			emoji: "😴",
+			color: C.green,
+			restDays: [4, 5] as number[],
+			difficulty: 0.8,
+		},
 	];
 
 	// Simple pseudo-random based on seed
@@ -83,7 +119,8 @@ function generateHabitData(): HabitTrackerData {
 		let streak = 0;
 		for (let i = todayIndex; i >= 0; i--) {
 			if (days[i] === "done") streak++;
-			else if (days[i] === "rest") continue; // skip rest days
+			else if (days[i] === "rest")
+				continue; // skip rest days
 			else break;
 		}
 		// Extend streak into previous weeks (simulate)
@@ -108,7 +145,8 @@ function generateHabitData(): HabitTrackerData {
 		0,
 	);
 	const totalPast = habits.reduce(
-		(sum, h) => sum + h.days.filter((d) => d !== "future" && d !== "rest").length,
+		(sum, h) =>
+			sum + h.days.filter((d) => d !== "future" && d !== "rest").length,
 		0,
 	);
 	const totalCompletionRate =

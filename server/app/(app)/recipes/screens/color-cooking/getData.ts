@@ -55,9 +55,7 @@ function getFallbackMeal(): CookingData {
 	};
 }
 
-async function fetchRandomMeal(
-	cuisine?: string,
-): Promise<CookingData> {
+async function fetchRandomMeal(cuisine?: string): Promise<CookingData> {
 	try {
 		let meal: Record<string, string | null> | null = null;
 
@@ -120,8 +118,7 @@ async function fetchRandomMeal(
 		}
 
 		const recipeUrl =
-			meal.strSource ||
-			`https://www.themealdb.com/meal/${meal.idMeal}`;
+			meal.strSource || `https://www.themealdb.com/meal/${meal.idMeal}`;
 
 		// Build QR code URL using goqr.me API
 		const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${encodeURIComponent(recipeUrl)}&format=png&margin=4`;
@@ -131,7 +128,10 @@ async function fetchRandomMeal(
 			category: meal.strCategory || "Unknown",
 			area: meal.strArea || "International",
 			ingredients: ingredients.slice(0, 10),
-			instructions: (meal.strInstructions || "").replace(/\r\n/g, " ").replace(/\n/g, " ").trim(),
+			instructions: (meal.strInstructions || "")
+				.replace(/\r\n/g, " ")
+				.replace(/\n/g, " ")
+				.trim(),
 			mealThumb: meal.strMealThumb || "",
 			recipeUrl,
 			qrCodeUrl,
