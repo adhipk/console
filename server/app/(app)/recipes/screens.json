@@ -363,6 +363,47 @@
 		"version": "1.0.0",
 		"category": "color-eink"
 	},
+	"color-google-photos": {
+		"title": "Color Google Photos",
+		"published": true,
+		"createdAt": "2026-02-09T00:00:00Z",
+		"updatedAt": "2026-02-09T00:00:00Z",
+		"description": "Display a random photo from a Google Photos shared album URL in a color e-ink friendly layout with metadata and status.",
+		"componentPath": "./screens/color-google-photos",
+		"hasDataFetch": true,
+		"props": {},
+		"params": {
+			"albumUrl": {
+				"type": "string",
+				"label": "Shared Album URL",
+				"description": "Google Photos shared album URL (https://photos.google.com/share/...).",
+				"default": "",
+				"placeholder": "https://photos.google.com/share/..."
+			},
+			"title": {
+				"type": "string",
+				"label": "Title",
+				"description": "Optional title shown in the header.",
+				"default": "Google Photos",
+				"placeholder": "Family Album"
+			}
+		},
+		"tags": [
+			"color",
+			"e-ink",
+			"photos",
+			"google-photos",
+			"live-data",
+			"configurable"
+		],
+		"author": {
+			"name": "Console",
+			"github": ""
+		},
+		"renderSettings": {},
+		"version": "1.0.0",
+		"category": "color-eink"
+	},
 	"color-air-quality": {
 		"title": "Color Air Quality",
 		"published": true,
